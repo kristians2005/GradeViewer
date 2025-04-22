@@ -8,7 +8,7 @@ class Database
         "dbname" => "inv_sistema",
         "charset" => "utf8mb4",
         "user" => "root",
-        "password" => ""
+        "password" => "root"
     ];
 
     private $pdo;

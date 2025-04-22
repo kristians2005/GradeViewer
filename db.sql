@@ -7,7 +7,7 @@ CREATE TABLE Users (
     last_name VARCHAR(50),
     email VARCHAR(100) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    role ENUM('student', 'teacher') NOT NULL
+    role ENUM('student', 'teacher') DEFAULT 'student' NOT NULL
 );
 
 CREATE TABLE Subjects (

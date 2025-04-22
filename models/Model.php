@@ -29,9 +29,9 @@ abstract class Model
 
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-        $sql = "INSERT INTO " . static::getTableName() . " (name, email, password) VALUES (:name, :email, :password)";
+        $sql = "INSERT INTO " . static::getTableName() . " (first_name, last_name, email, password) VALUES (:first_name,:last_name, :email, :password)";
 
-        $records = self::$db->query($sql, [":name" => $name, ":email" => $email, ":password" => $hashedPassword]);
+        $records = self::$db->query($sql, [":first_name" => $name, ":last_name" => $name, ":email" => $email, ":password" => $hashedPassword]);
         return $records;
 
     }

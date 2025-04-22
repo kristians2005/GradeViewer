@@ -2,15 +2,15 @@
     <div class="navbar-start">
         <a href="/" class="btn btn-ghost text-xl items-center"> <img src="views\partials\logo.png" class="w-[30px]"
                 alt="Stashly">
-            Stashly</a>
+            Grade Viewer</a>
     </div>
     <div class="navbar-center">
-        <?php if (Validator::Role('Admin')): ?>
+        <?php if (Validator::Role('teacher')): ?>
             <a href="/inventory" class="btn btn-ghost">Inventory</a>
             <a href="/products" class="btn btn-ghost">Products</a>
             <a href="/users" class="btn btn-ghost">Admin</a>
         <?php endif; ?>
-        <a href="/orders" class="btn btn-ghost">Orders</a>
+
     </div>
     <div class="navbar-end">
         <?php if (isset($_SESSION['logged_in'])): ?>

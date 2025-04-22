@@ -5,7 +5,7 @@ class Database
     private $config = [
         "host" => "localhost",
         "port" => 3306,
-        "dbname" => "inv_sistema",
+        "dbname" => "grades",
         "charset" => "utf8mb4",
         "user" => "root",
         "password" => "root"

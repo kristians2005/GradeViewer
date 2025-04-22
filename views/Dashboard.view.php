@@ -4,7 +4,7 @@
     <div class="container mx-auto px-6 py-8 max-w-7xl">
         <!-- Header -->
         <div class="mb-12">
-            <h1 class="text-3xl font-semibold text-white mb-3">E-klases Paneļa Sākums</h1>
+            <h1 class="text-3xl font-semibold text-white mb-3">Grade Viewer Paneļa Sākums</h1>
             <p class="text-gray-400 text-lg">Pārskats par Tavu digitālo mācību vidi</p>
         </div>
 

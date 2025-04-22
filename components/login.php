@@ -1,9 +1,9 @@
 <form action="/authenticate" class="w-full flex justify-center" method="POST">
     <div class="grid bg-base-300 w-[350px] gap-4 p-6 rounded-lg shadow-lg">
         <h1 class="text-3xl text-center font-bold m-2">Login</h1>
-        <input type="email" id="email" name="email"
-            class="input input-bordered input-md <?php echo isset($error['email']) ? 'input-error' : ''; ?>"
-            value="<?php echo $email ?? ''; ?>" required title="Jāievada epasts, kas ietver @ zīmi" placeholder="Email">
+        <input type="text" id="nick_name" name="nick_name"
+            class="input input-bordered input-md <?php echo isset($error['nick_name']) ? 'input-error' : ''; ?>"
+            value="<?php echo $name ?? ''; ?>" required placeholder="Nick name">
 
         <input type="password" id="password" name="password"
             class="input input-bordered input-md <?php echo isset($error['password']) ? 'input-error' : ''; ?>" required

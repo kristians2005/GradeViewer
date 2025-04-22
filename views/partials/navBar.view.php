@@ -2,7 +2,7 @@
     <div class="navbar-start">
         <a href="/" class="btn btn-ghost text-xl items-center"> <img src="views\partials\logo.png" class="w-[30px]"
                 alt="Stashly">
-            Grade Viewer</a>
+            Shit-klase</a>
     </div>
     <div class="navbar-center">
         <?php if (Validator::Role('teacher')): ?>
@@ -25,13 +25,11 @@
                     </span>
                 </div>
                 <ul tabindex="0" class="dropdown-content bg-base-200 z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                    <!-- <li><a href="/profile">Profile</a></li> -->
                     <li><a href="/logout">Logout</a></li>
                 </ul>
             </div>
         <?php else: ?>
-            <a href="/register" class="btn btn-ghost">Register</a>
-            <a href="/login" class="btn btn-ghost">Login</a>
+
         <?php endif; ?>
     </div>
 </div>

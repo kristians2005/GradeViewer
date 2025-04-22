@@ -14,4 +14,7 @@
 
 <body class="">
     <!-- <?php var_dump($_SESSION); ?> -->
-    <?php require_once "views/partials/navbar.view.php"; ?>
+    <div class="">
+        <?php require_once "views/partials/navbar.view.php"; ?>
+    </div>
+    <div class="pt-20 h-screen">

@@ -17,7 +17,7 @@
             <div class="dropdown dropdown-end">
                 <div tabindex="0" role="button" class="flex items-center gap-4 cursor-pointer">
                     <span class="text-base btn btn-ghost font-medium flex items-center gap-2">
-                        <?php echo htmlspecialchars($_SESSION['user_name']) ?>
+                        <?php echo htmlspecialchars($_SESSION['nick_name']) ?>
                         <div
                             class="badge badge-xs <?php echo $_SESSION['user_role'] === 'Worker' ? 'badge-primary' : 'badge-warning' ?>">
                             <?php echo $_SESSION['user_role'] ?>

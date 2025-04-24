@@ -28,8 +28,6 @@ class Validator
         } else {
             return false;
         }
-
-
     }
 
     public static function required($string)

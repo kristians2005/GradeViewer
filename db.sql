@@ -5,7 +5,11 @@ CREATE TABLE Users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(50),
     last_name VARCHAR(50),
+<<<<<<< Updated upstream
     email VARCHAR(100) UNIQUE NOT NULL,
+=======
+    nick_name VARCHAR(50),
+>>>>>>> Stashed changes
     password VARCHAR(255) NOT NULL,
     role ENUM('student', 'teacher') DEFAULT 'student' NOT NULL
 );
@@ -25,7 +29,7 @@ CREATE TABLE Grades (
     FOREIGN KEY (subject_id) REFERENCES Subjects(id)
 );
 
-INSERT INTO Users (first_name, last_name, email, password, role) VALUES
+INSERT INTO Users (first_name, last_name, nick_name, password, role) VALUES
 ('Anna', 'Kalniņa', 'anna.kalnina@example.com', 'hashed_password_anna', 'student'),
 ('Jānis', 'Ozols', 'janis.ozols@example.com', 'hashed_password_janis', 'student'),
 ('Laura', 'Liepa', 'laura.liepa@example.com', 'hashed_password_laura', 'student'),

@@ -27,6 +27,13 @@
                 Mūsu mērķis ir padarīt mācību procesu pārskatāmāku un pieejamāku visiem lietotājiem. Šī nav vienkārši platforma – tā ir vieta, kur digitāli satiekas zināšanas, vērtējumi un attīstība. Laipni lūgts Tavā e-klasē!
             </p>
         </div>
+<<<<<<< Updated upstream
+=======
+    </div>
+    <div class="flex justify-center items-center">
+        
+        <?php require_once "components/login.php"; ?>
+>>>>>>> Stashed changes
     </div>
 </div>
 

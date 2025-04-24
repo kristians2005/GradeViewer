@@ -5,11 +5,7 @@ CREATE TABLE Users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(50),
     last_name VARCHAR(50),
-<<<<<<< Updated upstream
-    email VARCHAR(100) UNIQUE NOT NULL,
-=======
     nick_name VARCHAR(50),
->>>>>>> Stashed changes
     password VARCHAR(255) NOT NULL,
     role ENUM('student', 'teacher') DEFAULT 'student' NOT NULL
 );

@@ -1,3 +1,4 @@
+
 <form action="/login" class="w-full flex justify-center" method="POST">
     <div class="grid bg-base-300 w-[350px] gap-4 p-6 rounded-lg shadow-lg">
         <h1 class="text-3xl text-center font-bold m-2">Login</h1>

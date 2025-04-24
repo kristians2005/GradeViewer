@@ -12,9 +12,16 @@ CREATE TABLE Users (
 
 CREATE TABLE Subjects (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    subject_name VARCHAR(100)
-);
+    subject_name VARCHAR(100),
 
+);
+CREATE TABLE TeacherSubjects (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    teacher_id INT,
+    subject_id INT,
+    FOREIGN KEY (teacher_id) REFERENCES Users(id),
+    FOREIGN KEY (subject_id) REFERENCES Subjects(id)
+);
 CREATE TABLE Grades (
     id INT AUTO_INCREMENT PRIMARY KEY,
     student_id INT,
@@ -35,6 +42,8 @@ INSERT INTO Subjects (subject_name) VALUES
 ('Matemātika'),
 ('Latviešu valoda'),
 ('Dabaszinības');
+
+
 
 INSERT INTO Grades (student_id, subject_id, grade, grade_date) VALUES
 (1, 1, 8.50, '2024-09-12 10:00:00'),

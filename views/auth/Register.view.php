@@ -4,13 +4,16 @@
 
     <form action="/registerUser" class="w-full flex justify-center" method="POST">
         <div class="grid bg-base-300 w-[350px] gap-4 p-6 rounded-lg shadow-lg">
-            <input type="text" id="name" name="name"
-                class="input input-bordered input-md <?php echo isset($error['name']) ? 'input-error' : ''; ?>"
-                value="<?php echo $name ?? ''; ?>" required placeholder="Name">
+            <input type="text" id="first_name" name="first_name"
+                class="input input-bordered input-md <?php echo isset($error['first_name']) ? 'input-error' : ''; ?>"
+                value="<?php echo $first_name ?? ''; ?>" required placeholder="first_name">
 
-            <input type="email" id="email"
-                class="input input-bordered input-md <?php echo isset($error['email']) ? 'input-error' : ''; ?>"
-                name="email" required value="<?php echo $email ?? ''; ?>" placeholder="Email">
+            <input type="text" id="last_name" name="last_name"
+                class="input input-bordered input-md <?php echo isset($error['last_name']) ? 'input-error' : ''; ?>"
+                value="<?php echo $last_name ?? ''; ?>" required placeholder="last_name">
+            <input type="nick_name" id="nick_name"
+                class="input input-bordered input-md <?php echo isset($error['nick_name']) ? 'input-error' : ''; ?>"
+                name="nick_name" required value="<?php echo $nick_name ?? ''; ?>" placeholder="nick_name">
 
             <input type="password"
                 class="input input-bordered input-md <?php echo isset($error['password']) ? 'input-error' : ''; ?>"

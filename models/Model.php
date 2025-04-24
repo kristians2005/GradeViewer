@@ -22,25 +22,25 @@ abstract class Model
         return $records ?: [];
     }
 
-    public static function register($name, $email, $password)
+    public static function register($name, $nick_name, $password)
     {
         self::init();
 
 
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-        $sql = "INSERT INTO " . static::getTableName() . " (first_name, last_name, email, password) VALUES (:first_name,:last_name, :email, :password)";
+        $sql = "INSERT INTO " . static::getTableName() . " (first_name, last_name, nick_name, password) VALUES (:first_name,:last_name, :nick_name, :password)";
 
-        $records = self::$db->query($sql, [":first_name" => $name, ":last_name" => $name, ":email" => $email, ":password" => $hashedPassword]);
+        $records = self::$db->query($sql, [":first_name" => $name, ":last_name" => $name, ":nick_name" => $nick_name, ":password" => $hashedPassword]);
         return $records;
 
     }
 
-    public static function login($email, $password)
+    public static function login($nick_name, $password)
     {
         self::init();
-        $sql = "SELECT * FROM " . static::getTableName() . " WHERE email = :email";
-        $records = self::$db->query($sql, [":email" => $email])->fetch();
+        $sql = "SELECT * FROM " . static::getTableName() . " WHERE nick_name = :nick_name";
+        $records = self::$db->query($sql, [":nick_name" => $nick_name])->fetch();
         if (!$records) {
             return false;
         }
@@ -50,11 +50,11 @@ abstract class Model
         return false;
     }
 
-    public static function getUser($email)
+    public static function getUser($nick_name)
     {
         self::init();
-        $sql = "SELECT * FROM " . static::getTableName() . " WHERE email = :email";
-        $records = self::$db->query($sql, [":email" => $email])->fetch();
+        $sql = "SELECT * FROM " . static::getTableName() . " WHERE nick_name = :nick_name";
+        $records = self::$db->query($sql, [":nick_name" => $nick_name])->fetch();
         return $records;
     }
 
@@ -67,11 +67,11 @@ abstract class Model
         return $record ?: null;
     }
 
-    public static function emailExists($email)
+    public static function emailExists($nick_name)
     {
         self::init();
-        $sql = "SELECT COUNT(*) FROM " . static::getTableName() . " WHERE email = :email";
-        $count = self::$db->query($sql, [":email" => $email])->fetchColumn();
+        $sql = "SELECT COUNT(*) FROM " . static::getTableName() . " WHERE nick_name = :nick_name";
+        $count = self::$db->query($sql, [":nick_name" => $nick_name])->fetchColumn();
         return $count > 0;
     }
 
@@ -90,9 +90,9 @@ abstract class Model
     {
         self::init();
 
-        $sql = "UPDATE " . static::getTableName() . " SET name = :name, email = :email, roles = :roles WHERE id = :id";
+        $sql = "UPDATE " . static::getTableName() . " SET name = :name, nick_name = :nick_name, roles = :roles WHERE id = :id";
 
-        $records = self::$db->query($sql, [":name" => $data["name"], ":email" => $data["email"], ":roles" => $data["roles"], ":id" => $id]);
+        $records = self::$db->query($sql, [":name" => $data["name"], ":nick_name" => $data["nick_name"], ":roles" => $data["roles"], ":id" => $id]);
         return $records;
         ;
     }
@@ -104,28 +104,5 @@ abstract class Model
         return self::$db->query($sql, [":id" => $id]) ? true : false;
     }
 
-    public static function lowStockProducts()
-    {
-        self::init();
-        $sql = "SELECT * FROM inventory WHERE quantity < 10";
-        $records = self::$db->query($sql)->fetchAll();
-        return $records ?: [];
-    }
-
-    public static function productCount()
-    {
-        self::init();
-        $sql = "SELECT COUNT(*) FROM products ";
-        $count = self::$db->query($sql)->fetchColumn();
-        return $count;
-    }
-
-    public static function orderCount()
-    {
-        self::init();
-        $sql = "SELECT COUNT(*) FROM orders ";
-        $count = self::$db->query($sql)->fetchColumn();
-        return $count;
-    }
 
 }

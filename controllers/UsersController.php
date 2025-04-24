@@ -54,20 +54,21 @@ class UsersController
             header("Location: /");
             exit();
         }
-        $name = $_POST['name'];
-        $email = $_POST['email'];
+        $fist_name = $_POST['first_name'];
+        $last_name = $_POST['last_name'];
+        $nick_name = $_POST['nick_name'];
         $password = $_POST['password'];
         $password_confirmation = $_POST['password_confirmation'];
         $roles = $_POST['roles'];
 
         $error = [];
 
-        if (Validator::required($name)) {
-            $error["name"] = "Name is required.";
+        if (Validator::required($nick_name)) {
+            $error["nick_name"] = "Name is required.";
         }
 
-        if (!Validator::strLengt($name, 3, 50)) {
-            $error["name"] = "Name must be between 3 and 50 characters long.";
+        if (!Validator::strLengt($nick_name, 3, 50)) {
+            $error["nick_name"] = "nick_name must be between 3 and 50 characters long.";
         }
 
         if (!Validator::passwordMatch($password, $password_confirmation)) {
@@ -82,13 +83,7 @@ class UsersController
             $error["password"] = "Password must be at least 8 characters long.";
         }
 
-        if (!Validator::email($email)) {
-            $error["email"] = "Email is not valid.";
-        }
 
-        if (Auth::emailExists($email)) {
-            $error["email"] = "This email is already registered. Please use a different email.";
-        }
 
 
 

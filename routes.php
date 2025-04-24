@@ -19,6 +19,9 @@ return [
   '/users/update' => 'UsersController@update', // Corrected route
   '/users/destroy' => 'UsersController@destroy',
 
+  //subjects
+  '/subjects' => 'SubjectsController@index',
+
   //reports
   '/repotts/export' => 'ReportsController@export', // Typo: should be /reports/export?
 ];

@@ -17,14 +17,9 @@
                 </p>
             </div>
         </div>
-<<<<<<< Updated upstream
-=======
+
     </div>
-    <div class="flex justify-center items-center">
-        
-        <?php require_once "components/login.php"; ?>
->>>>>>> Stashed changes
-    </div>
+
     <div class="flex justify-center items-center">
         <?php require_once "components/login.php"; ?>
     </div>

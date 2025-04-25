@@ -4,14 +4,6 @@ class SubjectsController
 {
     public function index()
     {
-<<<<<<< Updated upstream
-        // if (isset($_SESSION)) {
-        //     header('Location: /');
-        //     return;
-        // }
-
-        require "views/subjects/index.view.php";
-=======
         if (!isset($_SESSION['logged_in'])) {
             header('Location: /');
             return;
@@ -31,7 +23,6 @@ class SubjectsController
             require "views/subjects/student/index.view.php";
             return;
         }
->>>>>>> Stashed changes
     }
 
 }

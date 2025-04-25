@@ -1,5 +1,6 @@
 <?php
 
+require_once "models/subjects.php";
 
 class SubjectsController
 {
@@ -13,6 +14,10 @@ class SubjectsController
         }
 
         if ($_SESSION['user_role'] == 'teacher') {
+
+            $students = Subjects::allStudents();
+            $subjects = Subjects::getAllSubjects();
+
             require "views/subjects/teacher/index.view.php";
             return;
         }

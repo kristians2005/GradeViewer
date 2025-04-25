@@ -22,6 +22,10 @@ return [
   //subjects
   '/subjects' => 'SubjectsController@index',
 
+  '/profile' => 'ProfileController@index',
+  '/profile/edit' => 'ProfileController@edit',
+  '/profile/update' => 'ProfileController@update',
+
   //reports
   '/repotts/export' => 'ReportsController@export', // Typo: should be /reports/export?
 ];

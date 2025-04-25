@@ -22,6 +22,50 @@ abstract class Model
         return $records ?: [];
     }
 
+    public static function allStudents()
+    {
+        self::init();
+        $sql = "SELECT 
+                u.id,
+                u.first_name,
+                u.last_name,
+                COALESCE(AVG(g.grade), 0) as average_grade
+            FROM Users u
+            INNER JOIN Teachers_students ts ON u.id = ts.student_id
+            LEFT JOIN Grades g ON u.id = g.student_id
+            WHERE ts.teacher_id = :teacher_id
+            GROUP BY u.id, u.first_name, u.last_name";
+
+        $records = self::$db->query($sql, [
+            ':teacher_id' => $_SESSION['user_id']
+        ])->fetchAll();
+
+        return $records ?: [];
+    }
+
+    public static function getAllSubjects()
+    {
+        self::init();
+        $sql = "SELECT 
+            s.id,
+            s.subject_name as name,
+            COUNT(DISTINCT ts.student_id) as student_count,
+            COALESCE(AVG(g.grade), 0) as average_grade
+        FROM Subjects s
+        INNER JOIN User_Subjects us ON s.id = us.subject_id
+        INNER JOIN Users u ON us.user_id = u.id
+        INNER JOIN Teachers_students ts ON u.id = ts.student_id
+        LEFT JOIN Grades g ON s.id = g.subject_id AND ts.student_id = g.student_id
+        WHERE ts.teacher_id = :teacher_id
+        GROUP BY s.id, s.subject_name";
+
+        $records = self::$db->query($sql, [
+            ':teacher_id' => $_SESSION['user_id']
+        ])->fetchAll();
+
+        return $records ?: [];
+    }
+
     public static function register($name, $nick_name, $password)
     {
         self::init();

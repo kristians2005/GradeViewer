@@ -16,6 +16,14 @@ CREATE TABLE Subjects (
     subject_name VARCHAR(100)
 );
 
+CREATE TABLE Teachers_students (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    teacher_id INT,
+    student_id INT,
+    FOREIGN KEY (teacher_id) REFERENCES Users(id),
+    FOREIGN KEY (student_id) REFERENCES Users(id)
+);
+
 CREATE TABLE User_Subjects (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
@@ -70,7 +78,7 @@ INSERT INTO Subjects (subject_name) VALUES
 ('Politikas zinātne'),
 ('Tiesību zinātne');
 
--- Then insert users
+-- password: 1Password.
 INSERT INTO Users (first_name, last_name, nick_name, password, role) VALUES
 ('student', 'stud', 'students', '$2y$10$MA4ZmdHDh7V6CfaEHci.w.0ysGCh4xkDaj.JhZgk5tFFvdAcevTXC', 'student'),
 ('teacher', 'teach', 'teacher', '$2y$10$MA4ZmdHDh7V6CfaEHci.w.0ysGCh4xkDaj.JhZgk5tFFvdAcevTXC', 'teacher'),
@@ -87,6 +95,10 @@ INSERT INTO User_Subjects (user_id, subject_id) VALUES
 (3, 4),
 (4, 5),
 (4, 6);
+
+INSERT INTO Teachers_students (teacher_id, student_id) VALUES
+(2, 1),
+(2, 3);
 
 -- Finally insert grades
 INSERT INTO Grades (student_id, subject_id, grade, grade_date) VALUES

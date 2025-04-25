@@ -25,7 +25,7 @@ class AuthController
             $error["password"] = "Password is required.";
         }
 
-        
+
 
         if (Auth::login($nick_name, $password)) {
             $user = Auth::getUser($nick_name);
@@ -37,7 +37,7 @@ class AuthController
             $_SESSION['first_name'] = $user['first_name'];
             $_SESSION['last_name'] = $user['last_name'];
             $_SESSION['nick_name'] = $user['nick_name'];
-            $_SESSION['user_role'] = $user['roles'];
+            $_SESSION['user_role'] = $user['role'];
             $_SESSION['logged_in'] = true;
 
             header('Location: /');
@@ -129,33 +129,33 @@ class AuthController
 
         $error = [];
 
-            // if (Validator::required($nick_name)) {
-            //     $error["nick_name"] = "Name is required.";
-            // }
+        // if (Validator::required($nick_name)) {
+        //     $error["nick_name"] = "Name is required.";
+        // }
 
-            // if (!Validator::strLengt($nick_name, 3, 50)) {
-            //     $error["nick_name"] = "Name must be between 3 and 50 characters long.";
-            // }
+        // if (!Validator::strLengt($nick_name, 3, 50)) {
+        //     $error["nick_name"] = "Name must be between 3 and 50 characters long.";
+        // }
 
-            if (!Validator::passwordMatch($password, $password_confirmation)) {
-                $error["password"] = "Passwords do not match.";
-            }
+        if (!Validator::passwordMatch($password, $password_confirmation)) {
+            $error["password"] = "Passwords do not match.";
+        }
 
-            if (!Validator::passwordContains($password)) {
-                $error["password"] = "Password must contain at least one number and one uppercase letter and one simbol.";
-            }
+        if (!Validator::passwordContains($password)) {
+            $error["password"] = "Password must contain at least one number and one uppercase letter and one simbol.";
+        }
 
-            if (!Validator::passwordLength($password)) {
-                $error["password"] = "Password must be at least 8 characters long.";
-            }
+        if (!Validator::passwordLength($password)) {
+            $error["password"] = "Password must be at least 8 characters long.";
+        }
 
-            // if (!Validator::email($nick_name)) {
-            //     $error["nick_name"] = "Email is not valid.";
-            // }
+        // if (!Validator::email($nick_name)) {
+        //     $error["nick_name"] = "Email is not valid.";
+        // }
 
-            // if (Auth::emailExists($nick_name)) {
-            //     $error["nick_name"] = "This email is already registered. Please use a different email.";
-            // }
+        // if (Auth::emailExists($nick_name)) {
+        //     $error["nick_name"] = "This email is already registered. Please use a different email.";
+        // }
 
 
 

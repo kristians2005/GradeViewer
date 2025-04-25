@@ -13,7 +13,7 @@
 </head>
 
 <body class="">
-    <!-- <?php var_dump($_SESSION); ?> -->
+
     <div class="">
         <?php require_once "views/partials/navbar.view.php"; ?>
     </div>

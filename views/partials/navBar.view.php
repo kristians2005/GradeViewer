@@ -5,11 +5,6 @@
             Shit-klase</a>
     </div>
     <div class="navbar-center">
-        <?php if (Validator::Role('teacher')): ?>
-            <a href="/inventory" class="btn btn-ghost">Inventory</a>
-            <a href="/products" class="btn btn-ghost">Products</a>
-            <a href="/users" class="btn btn-ghost">Admin</a>
-        <?php endif; ?>
 
     </div>
     <div class="navbar-end">
@@ -19,7 +14,7 @@
                     <span class="text-base btn btn-ghost font-medium flex items-center gap-2">
                         <?php echo htmlspecialchars($_SESSION['nick_name']) ?>
                         <div
-                            class="badge badge-xs <?php echo $_SESSION['user_role'] === 'Worker' ? 'badge-primary' : 'badge-warning' ?>">
+                            class="badge badge-xs <?php echo $_SESSION['user_role'] === 'student' ? 'badge-primary' : 'badge-warning' ?>">
                             <?php echo $_SESSION['user_role'] ?>
                         </div>
                     </span>

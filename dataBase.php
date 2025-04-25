@@ -8,7 +8,7 @@ class Database
         "dbname" => "grades",
         "charset" => "utf8mb4",
         "user" => "root",
-        "password" => "root"
+        "password" => ""
     ];
 
     private $pdo;

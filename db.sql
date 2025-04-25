@@ -1,4 +1,5 @@
-CREATE DATABASE grades;
+DROP DATABASE IF EXISTS grades;
+CREATE DATABASE IF NOT EXISTS grades;
 USE grades;
 
 CREATE TABLE Users (
@@ -12,16 +13,19 @@ CREATE TABLE Users (
 
 CREATE TABLE Subjects (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    subject_name VARCHAR(100),
+    subject_name VARCHAR(100)
+);
 
-);
-CREATE TABLE TeacherSubjects (
+CREATE TABLE User_Subjects (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    teacher_id INT,
+    user_id INT,
     subject_id INT,
-    FOREIGN KEY (teacher_id) REFERENCES Users(id),
+    FOREIGN KEY (user_id) REFERENCES Users(id),
     FOREIGN KEY (subject_id) REFERENCES Subjects(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 );
+
 CREATE TABLE Grades (
     id INT AUTO_INCREMENT PRIMARY KEY,
     student_id INT,
@@ -32,19 +36,59 @@ CREATE TABLE Grades (
     FOREIGN KEY (subject_id) REFERENCES Subjects(id)
 );
 
-INSERT INTO Users (first_name, last_name, nick_name, password, role) VALUES
-('Anna', 'Kalniņa', 'anna.kalnina@example.com', 'hashed_password_anna', 'student'),
-('Jānis', 'Ozols', 'janis.ozols@example.com', 'hashed_password_janis', 'student'),
-('Laura', 'Liepa', 'laura.liepa@example.com', 'hashed_password_laura', 'student'),
-('Andris', 'Bērziņš', 'andris.berzins@example.com', 'hashed_password_andris', 'teacher');
-
+-- First insert subjects since they're referenced by User_Subjects
 INSERT INTO Subjects (subject_name) VALUES
 ('Matemātika'),
 ('Latviešu valoda'),
-('Dabaszinības');
+('Dabaszinības'),
+('Vēsture'),
+('Fizika'),
+('Ķīmija'),
+('Bioloģija'),
+('Angļu valoda'),
+('Vācu valoda'),
+('Krievu valoda'),
+('Mūzika'),
+('Māksla'),
+('Sports'),
+('Tehnoloģijas'),
+('Ekonomika'),
+('Sociālās zinības'),
+('Psiholoģija'),
+('Filozofija'),
+('Programmēšana'),
+('Dizains'),
+('Teātris'),
+('Dejas'),
+('Fotogrāfija'),
+('Žurnālistika'),
+('Mediju māksla'),
+('Radošā rakstīšana'),
+('Kultūras vēsture'),
+('Vides zinības'),
+('Starptautiskās attiecības'),
+('Politikas zinātne'),
+('Tiesību zinātne');
 
+-- Then insert users
+INSERT INTO Users (first_name, last_name, nick_name, password, role) VALUES
+('student', 'stud', 'students', '$2y$10$MA4ZmdHDh7V6CfaEHci.w.0ysGCh4xkDaj.JhZgk5tFFvdAcevTXC', 'student'),
+('teacher', 'teach', 'teacher', '$2y$10$MA4ZmdHDh7V6CfaEHci.w.0ysGCh4xkDaj.JhZgk5tFFvdAcevTXC', 'teacher'),
+('Laura', 'Liepa', 'laura.liepa@example.com', '$2y$10$MA4ZmdHDh7V6CfaEHci.w.0ysGCh4xkDaj.JhZgk5tFFvdAcevTXC', 'student'),
+('Andris', 'Bērziņš', 'andris.berzins@example.com', '$2y$10$MA4ZmdHDh7V6CfaEHci.w.0ysGCh4xkDaj.JhZgk5tFFvdAcevTXC', 'teacher');
 
+-- Then insert user_subjects
+INSERT INTO User_Subjects (user_id, subject_id) VALUES
+(1, 1),
+(1, 2),
+(2, 1),
+(2, 3),
+(3, 1),
+(3, 4),
+(4, 5),
+(4, 6);
 
+-- Finally insert grades
 INSERT INTO Grades (student_id, subject_id, grade, grade_date) VALUES
 (1, 1, 8.50, '2024-09-12 10:00:00'),
 (1, 2, 9.00, '2024-09-15 12:00:00'),

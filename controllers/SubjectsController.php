@@ -7,12 +7,25 @@ class SubjectsController
 
     public function index()
     {
-        // if (isset($_SESSION)) {
-        //     header('Location: /');
-        //     return;
-        // }
+        if (!isset($_SESSION['logged_in'])) {
+            header('Location: /');
+            return;
+        }
 
-        require "views/subjects/index.view.php";
+        if ($_SESSION['user_role'] == 'teacher') {
+            require "views/subjects/teacher/index.view.php";
+            return;
+        }
+
+        if ($_SESSION['user_role'] == 'student') {
+            require "views/subjects/student/index.view.php";
+            return;
+        }
+        // require "views/subjects/student/index.view.php";
+
+
+
+
     }
 
 

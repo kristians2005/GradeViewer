@@ -16,7 +16,6 @@ class SubjectsController
 
         if ($_SESSION['user_role'] == 'student') {
             $user_id = $_SESSION['user_id'];
-            
             require_once "models/Users.php";
             
             $subjects = Users::getSubjectsWithGrades($user_id);            

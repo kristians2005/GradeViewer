@@ -1,4 +1,5 @@
 <?php require_once "views/partials/header.view.php"; ?>
+<?php require_once "components/addSubjectModal.php"; ?>
 
 <div class="min-h-screen bg-base-200">
     <div class="container mx-auto px-4">
@@ -26,10 +27,10 @@
         </div>
 
         <!-- Students Table Card -->
-        <div class="card bg-base-100 shadow-xl">
-            <div class="card-body">
-                <div class="overflow-x-null">
-                    <table class="table table-zebra w-full ">
+        <div class="card bg-base-100 shadow-xl ">
+            <div class="card-body ">
+                <div class="overflow-x-null max-h-[400px] overflow-y-auto">
+                    <table class="table table-zebra w-full">
                         <thead>
                             <tr>
                                 <th class="bg-base-200">Student Name</th>
@@ -42,7 +43,8 @@
                                 <?php foreach ($students as $student): ?>
                                     <tr>
                                         <td class="font-medium">
-                                            <?= htmlspecialchars($student['first_name'] . ' ' . $student['last_name']) ?>
+                                            <a href="/"
+                                                class="btn btn-primary btn-soft btn-md w-40"><?= htmlspecialchars($student['first_name'] . ' ' . $student['last_name']) ?></a>
                                         </td>
                                         <td>
                                             <div class="flex items-center gap-2">
@@ -52,9 +54,9 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <div class="flex justify-end gap-2">
+                                            <div class=" flex gap-2 justify-end">
                                                 <a href="/subjects/grades/add?student_id=<?= $student['id'] ?>"
-                                                    class="btn btn-success btn-sm tooltip" data-tip="Add Grade">
+                                                    class="btn btn-soft btn-success btn-sm " data-tip="Add Grade">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
                                                         viewBox="0 0 24 24" stroke="currentColor">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -62,7 +64,7 @@
                                                     </svg>
                                                 </a>
                                                 <a href="/subjects/students/view?id=<?= $student['id'] ?>"
-                                                    class="btn btn-info btn-sm tooltip" data-tip="View Grades">
+                                                    class="btn btn-soft btn-info btn-sm tooltip" data-tip="View Grades">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
                                                         viewBox="0 0 24 24" stroke="currentColor">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -71,7 +73,7 @@
                                                             d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                                     </svg>
                                                 </a>
-                                                <button class="btn btn-error btn-sm tooltip" data-tip="Remove Student">
+                                                <button class="btn btn-soft btn-error btn-sm tooltip" data-tip="Remove Student">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
                                                         viewBox="0 0 24 24" stroke="currentColor">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -98,14 +100,7 @@
             <div class="card-body">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-2xl font-bold">Subjects</h2>
-                    <a href="/subjects/create" class="btn btn-primary">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                        </svg>
-                        Add Subject
-                    </a>
+                    <?php require_once "components/addSubjectModalBTN.php"; ?>
                 </div>
                 <div class="overflow-x-null">
                     <table class="table table-zebra w-full">
@@ -135,7 +130,7 @@
                                         <td>
                                             <div class="flex justify-end gap-2">
                                                 <a href="/subjects/grades/add?subject_id=<?= $subject['id'] ?>"
-                                                    class="btn btn-success btn-sm tooltip" data-tip="Add Grade">
+                                                    class="btn btn-soft btn-success btn-sm tooltip" data-tip="Add Grade">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
                                                         viewBox="0 0 24 24" stroke="currentColor">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -143,7 +138,7 @@
                                                     </svg>
                                                 </a>
                                                 <a href="/subjects/view?id=<?= $subject['id'] ?>"
-                                                    class="btn btn-info btn-sm tooltip" data-tip="View Details">
+                                                    class="btn btn-soft btn-info btn-sm tooltip" data-tip="View Details">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
                                                         viewBox="0 0 24 24" stroke="currentColor">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -156,7 +151,7 @@
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <tr>
-                                    <td colspan="4" class="text-center py-4">No subjects found</td>
+                                    <td colspan="4" class="text-center py-4">No subjects added yet</td>
                                 </tr>
                             <?php endif; ?>
                         </tbody>

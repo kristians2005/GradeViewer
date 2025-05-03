@@ -6,7 +6,7 @@
     </div>
     <div class="navbar-center">
         <?php if (isset($_SESSION['logged_in'])): ?>
-            <a href="/subjects" class="btn btn-ghost text-md">Home</a>
+            <a href="/home" class="btn btn-ghost text-md">Home</a>
         <?php endif; ?>
     </div>
     <div class="navbar-end">

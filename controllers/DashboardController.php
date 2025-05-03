@@ -10,7 +10,7 @@ class DashboardController
     public function index()
     {
         if (isset($_SESSION['logged_in'])) {
-            header('Location: /subjects');
+            header('Location: /home');
             return;
         }
 

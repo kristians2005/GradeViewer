@@ -80,6 +80,21 @@ abstract class Model
 
     }
 
+    public static function getSubjectsWithGradesForUser($user_id)
+    {
+        self::init();
+
+        $sql = "SELECT s.id, s.subject_name, AVG(g.grade) as average_grade
+                FROM subjects s
+                JOIN user_subjects us ON s.id = us.subject_id
+                LEFT JOIN grades g ON s.id = g.subject_id AND g.student_id = :user_id
+                WHERE us.user_id = :user_id
+                GROUP BY s.id, s.subject_name";
+
+        $subjects = self::$db->query($sql, [":user_id" => $user_id])->fetchAll();
+        return $subjects ?: [];
+    }
+
     public static function login($nick_name, $password)
     {
         self::init();

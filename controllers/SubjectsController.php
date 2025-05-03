@@ -14,23 +14,46 @@ class SubjectsController
         }
 
         if ($_SESSION['user_role'] == 'teacher') {
-
             $students = Subjects::allStudents();
             $subjects = Subjects::getAllSubjects();
+            $allSubjects = Subjects::getAllAvailableSubjects(); // Add this line
 
-            require "views/subjects/teacher/index.view.php";
+            require "views/home/teacher/index.view.php";
             return;
         }
 
         if ($_SESSION['user_role'] == 'student') {
-            require "views/subjects/student/index.view.php";
+            $user_id = $_SESSION['user_id'];
+
+            require_once "models/Users.php";
+
+            $subjects = Users::getSubjectsWithGrades($user_id);
+            require "views/home/student/index.view.php";
             return;
         }
-        // require "views/subjects/student/index.view.php";
 
+    }
 
+    public function assign()
+    {
+        if (!isset($_SESSION['logged_in'])) {
+            header('Location: /');
+            return;
+        }
 
+        if (isset($_POST['subjects']) && is_array($_POST['subjects'])) {
+            $successCount = 0;
+            foreach ($_POST['subjects'] as $subjectId) {
+                if (is_numeric($subjectId)) {  // Basic validation
+                    if (Subjects::assignSubject($subjectId, $_SESSION['user_id'])) {
+                        $successCount++;
+                    }
+                }
+            }
+            $_SESSION['message'] = "$successCount subjects assigned successfully";
+        }
 
+        header('Location: /home');
     }
 
 

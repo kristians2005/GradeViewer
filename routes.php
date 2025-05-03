@@ -19,8 +19,9 @@ return [
   '/users/update' => 'UsersController@update', // Corrected route
   '/users/destroy' => 'UsersController@destroy',
 
-  //subjects
-  '/subjects' => 'SubjectsController@index',
+  //home
+  '/home' => 'SubjectsController@index',
+  '/subjects/assign' => 'SubjectsController@assign',
 
   '/profile' => 'ProfileController@index',
   '/profile/edit' => 'ProfileController@edit',

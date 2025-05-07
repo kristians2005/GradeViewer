@@ -15,6 +15,6 @@
 <body class="">
 
     <div class="">
-        <?php require_once "views/partials/navbar.view.php"; ?>
+        <?php require_once "views/partials/navBar.view.php"; ?>
     </div>
     <div class="pt-20 h-screen">

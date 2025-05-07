@@ -1,6 +1,6 @@
 <?php
 
-require_once "models/subjects.php";
+//require_once "models/subjects.php";
 
 class SubjectsController
 {

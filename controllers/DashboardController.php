@@ -1,22 +1,27 @@
 <?php
 
-require_once "models/Dashboard.php";
-
+require_once "middleware.php";
 
 class DashboardController
 {
-
-
     public function index()
     {
-        if (isset($_SESSION['logged_in'])) {
-            header('Location: /home');
-            return;
+        //Middleware::isLoggedIn();
+        if (isset($_SESSION['user_role'])) {
+            // Redirect based on role
+            switch ($_SESSION['user_role']) {
+                case 'student':
+                header('Location: /student/dashboard');
+                break;
+            case 'teacher':
+                header('Location: /teacher/dashboard');
+                break;
+            default:
+                require "views/Dashboard.view.php";
+                break;
         }
-
-        require "views/Dashboard.view.php";
+        } else {
+            require "views/Dashboard.view.php";
+        }
     }
-
-
-
 }

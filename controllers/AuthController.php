@@ -10,7 +10,6 @@ class AuthController
 
     public function login()
     {
-        var_dump($_POST);
         if (isset($_SESSION['logged_in'])) {
             header('Location: /');
             return;
@@ -24,8 +23,6 @@ class AuthController
         if (Validator::required($password)) {
             $error["password"] = "Password is required.";
         }
-
-
 
         if (Auth::login($nick_name, $password)) {
             $user = Auth::getUser($nick_name);
@@ -45,7 +42,7 @@ class AuthController
         }
 
         $error["password"] = "Invalid nick_name or password.";
-        require "views/dashboard.view.php";
+        require "views/Dashboard.view.php";
 
     }
 
@@ -80,8 +77,8 @@ class AuthController
 
         $error = [];
 
-        if (!Validator::nick_name($nick_name)) {
-            $error["nick_name"] = "Please enter a valid nick_name address.";
+        if (Validator::required($nick_name)) {
+            $error["nick_name"] = "Nick name is required.";
         }
 
         if (Validator::required($password)) {
@@ -100,9 +97,10 @@ class AuthController
             }
 
             $_SESSION['user_id'] = $user['id'];
-            $_SESSION['user_name'] = $user['name'];
+            $_SESSION['first_name'] = $user['first_name'];
+            $_SESSION['last_name'] = $user['last_name'];
             $_SESSION['nick_name'] = $user['nick_name'];
-            $_SESSION['user_role'] = $user['roles'];
+            $_SESSION['user_role'] = $user['role'];
             $_SESSION['logged_in'] = true;
 
             header('Location: /');
@@ -115,12 +113,6 @@ class AuthController
 
     public function registerUser()
     {
-        // if (isset($_SESSION['logged_in'])) {
-        //     header('Location: /');
-        //     return;
-        // }
-
-        var_dump($_POST);
         $first_name = $_POST['first_name'];
         $last_name = $_POST['last_name'];
         $nick_name = $_POST['nick_name'];
@@ -129,40 +121,36 @@ class AuthController
 
         $error = [];
 
-        // if (Validator::required($nick_name)) {
-        //     $error["nick_name"] = "Name is required.";
-        // }
+        if (Validator::required($first_name)) {
+            $error["first_name"] = "First name is required.";
+        }
 
-        // if (!Validator::strLengt($nick_name, 3, 50)) {
-        //     $error["nick_name"] = "Name must be between 3 and 50 characters long.";
-        // }
+        if (Validator::required($last_name)) {
+            $error["last_name"] = "Last name is required.";
+        }
+
+        if (Validator::required($nick_name)) {
+            $error["nick_name"] = "Nick name is required.";
+        }
 
         if (!Validator::passwordMatch($password, $password_confirmation)) {
             $error["password"] = "Passwords do not match.";
         }
 
         if (!Validator::passwordContains($password)) {
-            $error["password"] = "Password must contain at least one number and one uppercase letter and one simbol.";
+            $error["password"] = "Password must contain at least one number and one uppercase letter and one symbol.";
         }
 
         if (!Validator::passwordLength($password)) {
             $error["password"] = "Password must be at least 8 characters long.";
         }
 
-        // if (!Validator::email($nick_name)) {
-        //     $error["nick_name"] = "Email is not valid.";
-        // }
-
-        // if (Auth::emailExists($nick_name)) {
-        //     $error["nick_name"] = "This email is already registered. Please use a different email.";
-        // }
-
-
-
-        // var_dump($error);
+        if (Auth::nickNameExists($nick_name)) {
+            $error["nick_name"] = "This nick name is already registered. Please use a different one.";
+        }
 
         if (empty($error)) {
-            Auth::register($first_name, $nick_name, $password);
+            Auth::register($first_name, $last_name, $nick_name, $password);
             header('Location: /');
         } else {
             require "views/auth/Register.view.php";

@@ -66,19 +66,19 @@ abstract class Model
         return $records ?: [];
     }
 
-    public static function register($name, $nick_name, $password)
-    {
-        self::init();
+    // public static function register($name, $nick_name, $password)
+    // {
+    //     self::init();
 
 
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    //     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-        $sql = "INSERT INTO " . static::getTableName() . " (first_name, last_name, nick_name, password) VALUES (:first_name,:last_name, :nick_name, :password)";
+    //     $sql = "INSERT INTO " . static::getTableName() . " (first_name, last_name, nick_name, password) VALUES (:first_name,:last_name, :nick_name, :password)";
 
-        $records = self::$db->query($sql, [":first_name" => $name, ":last_name" => $name, ":nick_name" => $nick_name, ":password" => $hashedPassword]);
-        return $records;
+    //     $records = self::$db->query($sql, [":first_name" => $name, ":last_name" => $name, ":nick_name" => $nick_name, ":password" => $hashedPassword]);
+    //     return $records;
 
-    }
+    // }
 
     public static function getSubjectsWithGradesForUser($user_id)
     {
@@ -95,19 +95,19 @@ abstract class Model
         return $subjects ?: [];
     }
 
-    public static function login($nick_name, $password)
-    {
-        self::init();
-        $sql = "SELECT * FROM " . static::getTableName() . " WHERE nick_name = :nick_name";
-        $records = self::$db->query($sql, [":nick_name" => $nick_name])->fetch();
-        if (!$records) {
-            return false;
-        }
-        if (password_verify($password, $records['password'])) {
-            return true;
-        }
-        return false;
-    }
+    // public static function login($nick_name, $password)
+    // {
+    //     self::init();
+    //     $sql = "SELECT * FROM " . static::getTableName() . " WHERE nick_name = :nick_name";
+    //     $records = self::$db->query($sql, [":nick_name" => $nick_name])->fetch();
+    //     if (!$records) {
+    //         return false;
+    //     }
+    //     if (password_verify($password, $records['password'])) {
+    //         return true;
+    //     }
+    //     return false;
+    // }
 
     public static function getUser($nick_name)
     {

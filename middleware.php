@@ -1,22 +1,24 @@
 <?php
 
 class Middleware {
-    public static function checkRole($allowedRoles) {
-        if (!isset($_SESSION['user_role'])) {
-            header('Location: /welcome');
-            exit();
-        }
-
-        if (!in_array($_SESSION['user_role'], $allowedRoles)) {
-            header('Location: /');
-            exit();
-        }
-    }
-
     public static function isLoggedIn() {
-        if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
-            header('Location: /welcome');
-            exit();
+        if (!isset($_SESSION['user_id'])) {
+            header("Location: /welcome");
+            exit;
         }
     }
-} 
+
+    public static function checkRole($allowed_roles) {
+        self::isLoggedIn();
+
+        // Convert single role to array if it's a string
+        if (!is_array($allowed_roles)) {
+            $allowed_roles = [$allowed_roles];
+        }
+
+        if (!isset($_SESSION['user_role']) || !in_array($_SESSION['user_role'], $allowed_roles)) {
+            header("Location: /welcome");
+            exit;
+        }
+    }
+}

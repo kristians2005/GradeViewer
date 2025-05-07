@@ -14,9 +14,15 @@ return [
 
   // Protected routes - Teacher
   '/teacher/dashboard' => ['controller' => 'TeacherController@dashboard', 'roles' => ['teacher']],
-  '/teacher/students' => ['controller' => 'TeacherController@students', 'roles' => ['teacher']],
-  '/teacher/grades' => ['controller' => 'TeacherController@grades', 'roles' => ['teacher']],
-  '/teacher/subjects' => ['controller' => 'TeacherController@subjects', 'roles' => ['teacher']],
+  '/teacher/classes' => ['controller' => 'TeacherController@classes', 'roles' => ['teacher']],
+  '/teacher/students/{class_id}' => ['controller' => 'TeacherController@students', 'roles' => ['teacher']],
+  '/teacher/grades/{student_id}/{class_id}' => ['controller' => 'TeacherController@grades', 'roles' => ['teacher']],
+  '/teacher/addGrade' => ['controller' => 'TeacherController@addGrade', 'roles' => ['teacher']],
+  '/teacher/updateGrade' => ['controller' => 'TeacherController@updateGrade', 'roles' => ['teacher']],
+  '/teacher/deleteGrade/{grade_id}' => ['controller' => 'TeacherController@deleteGrade', 'roles' => ['teacher']],
+  '/teacher/class/{class_id}/add-student' => ['controller' => 'TeacherController@showAddStudent', 'roles' => ['teacher']],
+  '/teacher/class/{class_id}/add-student-to-class' => ['controller' => 'TeacherController@addStudentToClass', 'roles' => ['teacher']],
+  '/teacher/class/{class_id}/remove-student/{student_id}' => ['controller' => 'TeacherController@removeStudentFromClass', 'roles' => ['teacher']],
 
   // Common protected routes
   '/profile' => ['controller' => 'ProfileController@index', 'roles' => ['student', 'teacher']],
@@ -28,18 +34,18 @@ return [
   '/' => ['controller' => 'DashboardController@index', 'roles' => ['student', 'teacher']],
 
   //users (skolotājs var veidot, editot un dzēst tikai savus skolniekus)
-  '/users' => 'UsersController@index',
-  '/users/show' => 'UsersController@show',
-  '/users/edit' => 'UsersController@edit', // Corrected route
-  '/users/create' => 'UsersController@create',
-  '/users/store' => 'UsersController@store',
-  '/users/update' => 'UsersController@update', // Corrected route
-  '/users/destroy' => 'UsersController@destroy',
+  '/users' => ['controller' => 'UsersController@index', 'roles' => ['teacher']],
+  '/users/show' => ['controller' => 'UsersController@show', 'roles' => ['teacher']],
+  '/users/edit' => ['controller' => 'UsersController@edit', 'roles' => ['teacher']],
+  '/users/create' => ['controller' => 'UsersController@create', 'roles' => ['teacher']],
+  '/users/store' => ['controller' => 'UsersController@store', 'roles' => ['teacher']],
+  '/users/update' => ['controller' => 'UsersController@update', 'roles' => ['teacher']],
+  '/users/destroy' => ['controller' => 'UsersController@destroy', 'roles' => ['teacher']],
 
   //home
-  '/home' => 'StudentController@index',
-  '/subjects/assign' => 'SubjectsController@assign',
+  '/home' => ['controller' => 'StudentController@index', 'roles' => ['student']],
+  '/subjects/assign' => ['controller' => 'SubjectsController@assign', 'roles' => ['teacher']],
 
   //reports
-  '/repotts/export' => 'ReportsController@export', // Typo: should be /reports/export?
+  '/reports/export' => ['controller' => 'ReportsController@export', 'roles' => ['teacher']],
 ];

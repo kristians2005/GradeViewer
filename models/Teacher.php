@@ -55,25 +55,32 @@ class Teacher extends Model
     {
         self::init();
         
+        // Get students who don't have any teacher assigned
         $sql = "SELECT u.id, u.first_name, u.last_name, u.nick_name
                 FROM users u 
                 LEFT JOIN students s ON u.id = s.user_id
                 WHERE u.role = 'student' 
-                AND (s.class_id IS NULL OR s.class_id != :class_id)";
+                AND (s.class_id IS NULL)";
                 
-        return self::$db->query($sql, [":class_id" => $class_id])->fetchAll();
+        return self::$db->query($sql)->fetchAll();
     }
 
     public static function addStudentToClass($student_id, $class_id)
     {
         self::init();
         
-        // First check if student already exists
-        $sql = "SELECT id FROM students WHERE user_id = :user_id";
+        // First check if student already has a teacher
+        $sql = "SELECT s.id, s.class_id 
+                FROM students s 
+                WHERE s.user_id = :user_id";
         $student = self::$db->query($sql, [":user_id" => $student_id])->fetch();
         
         if ($student) {
-            // Update existing student
+            // If student already has a class, return false
+            if ($student['class_id'] !== null) {
+                return false;
+            }
+            // Update existing student record
             $sql = "UPDATE students SET class_id = :class_id WHERE user_id = :user_id";
         } else {
             // Create new student record
@@ -91,17 +98,17 @@ class Teacher extends Model
         self::init();
         
         // First verify that the student is in this class
-        $sql = "SELECT id FROM students WHERE user_id = :user_id AND class_id = :class_id";
+        $sql = "SELECT id FROM students WHERE id = :student_id AND class_id = :class_id";
         $student = self::$db->query($sql, [
-            ":user_id" => $student_id,
+            ":student_id" => $student_id,
             ":class_id" => $class_id
         ])->fetch();
         
         if ($student) {
             // Remove the student from the class
-            $sql = "UPDATE students SET class_id = NULL WHERE user_id = :user_id AND class_id = :class_id";
+            $sql = "UPDATE students SET class_id = NULL WHERE id = :student_id AND class_id = :class_id";
             return self::$db->query($sql, [
-                ":user_id" => $student_id,
+                ":student_id" => $student_id,
                 ":class_id" => $class_id
             ]);
         }
@@ -179,5 +186,63 @@ class Teacher extends Model
         
         $sql = "DELETE FROM grades WHERE id = :grade_id";
         return self::$db->query($sql, [":grade_id" => $grade_id]);
+    }
+
+    public static function addSubject($subject_name, $class_id)
+    {
+        self::init();
+        
+        try {
+            $sql = "INSERT INTO subjects (subject_name, class_id) VALUES (:subject_name, :class_id)";
+            return self::$db->query($sql, [
+                ":subject_name" => $subject_name,
+                ":class_id" => $class_id
+            ]);
+        } catch (Exception $e) {
+            error_log("Error adding subject: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public static function updateSubject($subject_id, $subject_name)
+    {
+        self::init();
+        
+        try {
+            $sql = "UPDATE subjects SET subject_name = :subject_name WHERE id = :subject_id";
+            return self::$db->query($sql, [
+                ":subject_id" => $subject_id,
+                ":subject_name" => $subject_name
+            ]);
+        } catch (Exception $e) {
+            error_log("Error updating subject: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public static function deleteSubject($subject_id)
+    {
+        self::init();
+        
+        try {
+            // First delete all grades associated with this subject
+            $sql = "DELETE FROM grades WHERE subject_id = :subject_id";
+            self::$db->query($sql, [":subject_id" => $subject_id]);
+            
+            // Then delete the subject
+            $sql = "DELETE FROM subjects WHERE id = :subject_id";
+            return self::$db->query($sql, [":subject_id" => $subject_id]);
+        } catch (Exception $e) {
+            error_log("Error deleting subject: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public static function getSubject($subject_id)
+    {
+        self::init();
+        
+        $sql = "SELECT * FROM subjects WHERE id = :subject_id";
+        return self::$db->query($sql, [":subject_id" => $subject_id])->fetch();
     }
 } 

@@ -15,6 +15,10 @@ return [
   // Protected routes - Teacher
   '/teacher/dashboard' => ['controller' => 'TeacherController@dashboard', 'roles' => ['teacher']],
   '/teacher/classes' => ['controller' => 'TeacherController@classes', 'roles' => ['teacher']],
+  '/teacher/subjects' => ['controller' => 'TeacherController@subjects', 'roles' => ['teacher']],
+  '/teacher/subject/add' => ['controller' => 'TeacherController@addSubject', 'roles' => ['teacher']],
+  '/teacher/subject/update' => ['controller' => 'TeacherController@updateSubject', 'roles' => ['teacher']],
+  '/teacher/subject/{subject_id}/delete' => ['controller' => 'TeacherController@deleteSubject', 'roles' => ['teacher']],
   '/teacher/students/{class_id}' => ['controller' => 'TeacherController@students', 'roles' => ['teacher']],
   '/teacher/grades/{student_id}/{class_id}' => ['controller' => 'TeacherController@grades', 'roles' => ['teacher']],
   '/teacher/addGrade' => ['controller' => 'TeacherController@addGrade', 'roles' => ['teacher']],

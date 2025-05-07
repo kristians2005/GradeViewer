@@ -60,7 +60,10 @@ class TeacherController
             $student_id = $_POST['student_id'] ?? null;
 
             if ($student_id) {
-                Teacher::addStudentToClass($student_id, $class_id);
+                $result = Teacher::addStudentToClass($student_id, $class_id);
+                if (!$result) {
+                    $_SESSION['error'] = "This student already has a teacher assigned.";
+                }
             }
         }
 
@@ -73,6 +76,11 @@ class TeacherController
         Middleware::isLoggedIn();
         Middleware::checkRole('teacher');
 
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header("Location: /teacher/students/{$class_id}");
+            exit;
+        }
+
         // Verify that the class belongs to this teacher
         $classes = Teacher::getTeacherClasses($_SESSION['user_id']);
         $class_exists = false;
@@ -84,7 +92,12 @@ class TeacherController
         }
 
         if ($class_exists) {
-            Teacher::removeStudentFromClass($student_id, $class_id);
+            $result = Teacher::removeStudentFromClass($student_id, $class_id);
+            if (!$result) {
+                $_SESSION['error'] = "Failed to remove student from class.";
+            }
+        } else {
+            $_SESSION['error'] = "You don't have permission to modify this class.";
         }
 
         header("Location: /teacher/students/{$class_id}");
@@ -158,6 +171,83 @@ class TeacherController
         }
 
         header("Location: " . $_SERVER['HTTP_REFERER']);
+        exit;
+    }
+
+    public function subjects()
+    {
+        Middleware::isLoggedIn();
+        Middleware::checkRole('teacher');
+
+        $subjects = Teacher::getClassSubjects($_SESSION['user_id']);
+        require_once "views/teacher/subjects.view.php";
+    }
+
+    public function addSubject()
+    {
+        Middleware::isLoggedIn();
+        Middleware::checkRole('teacher');
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $subject_name = $_POST['subject_name'] ?? '';
+            $class_id = $_POST['class_id'] ?? null;
+
+            if (empty($subject_name)) {
+                $_SESSION['error'] = "Subject name is required.";
+            } else {
+                $result = Teacher::addSubject($subject_name, $class_id);
+                if ($result) {
+                    $_SESSION['success'] = "Subject added successfully.";
+                } else {
+                    $_SESSION['error'] = "Failed to add subject.";
+                }
+            }
+        }
+
+        header("Location: /teacher/subjects");
+        exit;
+    }
+
+    public function updateSubject()
+    {
+        Middleware::isLoggedIn();
+        Middleware::checkRole('teacher');
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $subject_id = $_POST['subject_id'] ?? null;
+            $subject_name = $_POST['subject_name'] ?? '';
+
+            if (empty($subject_name)) {
+                $_SESSION['error'] = "Subject name is required.";
+            } else {
+                $result = Teacher::updateSubject($subject_id, $subject_name);
+                if ($result) {
+                    $_SESSION['success'] = "Subject updated successfully.";
+                } else {
+                    $_SESSION['error'] = "Failed to update subject.";
+                }
+            }
+        }
+
+        header("Location: /teacher/subjects");
+        exit;
+    }
+
+    public function deleteSubject($subject_id)
+    {
+        Middleware::isLoggedIn();
+        Middleware::checkRole('teacher');
+
+        if ($subject_id) {
+            $result = Teacher::deleteSubject($subject_id);
+            if ($result) {
+                $_SESSION['success'] = "Subject deleted successfully.";
+            } else {
+                $_SESSION['error'] = "Failed to delete subject.";
+            }
+        }
+
+        header("Location: /teacher/subjects");
         exit;
     }
 } 

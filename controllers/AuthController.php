@@ -113,11 +113,16 @@ class AuthController
 
     public function registerUser()
     {
-        $first_name = $_POST['first_name'];
-        $last_name = $_POST['last_name'];
-        $nick_name = $_POST['nick_name'];
-        $password = $_POST['password'];
-        $password_confirmation = $_POST['password_confirmation'];
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: /register');
+            exit;
+        }
+
+        $first_name = $_POST['first_name'] ?? '';
+        $last_name = $_POST['last_name'] ?? '';
+        $nick_name = $_POST['nick_name'] ?? '';
+        $password = $_POST['password'] ?? '';
+        $password_confirmation = $_POST['password_confirmation'] ?? '';
 
         $error = [];
 
@@ -133,12 +138,16 @@ class AuthController
             $error["nick_name"] = "Nick name is required.";
         }
 
+        if (Validator::required($password)) {
+            $error["password"] = "Password is required.";
+        }
+
         if (!Validator::passwordMatch($password, $password_confirmation)) {
             $error["password"] = "Passwords do not match.";
         }
 
         if (!Validator::passwordContains($password)) {
-            $error["password"] = "Password must contain at least one number and one uppercase letter and one symbol.";
+            $error["password"] = "Password must contain at least one number, one uppercase letter, and one symbol.";
         }
 
         if (!Validator::passwordLength($password)) {
@@ -150,12 +159,26 @@ class AuthController
         }
 
         if (empty($error)) {
-            Auth::register($first_name, $last_name, $nick_name, $password);
-            header('Location: /');
-        } else {
-            require "views/auth/Register.view.php";
+            $result = Auth::register($first_name, $last_name, $nick_name, $password);
+            if ($result) {
+                // Auto login after successful registration
+                $user = Auth::getUser($nick_name);
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['first_name'] = $user['first_name'];
+                $_SESSION['last_name'] = $user['last_name'];
+                $_SESSION['nick_name'] = $user['nick_name'];
+                $_SESSION['user_role'] = $user['role'];
+                $_SESSION['logged_in'] = true;
+                
+                header('Location: /');
+                exit;
+            } else {
+                $error["general"] = "Registration failed. Please try again.";
+            }
         }
 
+        // If we get here, there were errors
+        require "views/auth/Register.view.php";
     }
 
 

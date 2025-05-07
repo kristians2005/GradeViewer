@@ -13,38 +13,47 @@
         <?php unset($_SESSION['error']); ?>
     <?php endif; ?>
 
+    <?php if (isset($_SESSION['success'])): ?>
+        <div class="alert alert-success shadow-lg mb-4">
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span><?php echo htmlspecialchars($_SESSION['success']); ?></span>
+            </div>
+        </div>
+        <?php unset($_SESSION['success']); ?>
+    <?php endif; ?>
+
     <div class="card bg-base-100 shadow-xl">
         <div class="card-body">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="card-title text-2xl font-bold">Class Students</h2>
+                <h2 class="card-title text-2xl font-bold">Manage Subjects</h2>
                 <div class="flex gap-2">
-                    <a href="/teacher/classes" class="btn btn-ghost">Back to Classes</a>
-                    <a href="/teacher/class/<?php echo $class_id; ?>/add-student" class="btn btn-primary">Add Student</a>
+                    <a href="/teacher/dashboard" class="btn btn-ghost">Back to Dashboard</a>
+                    <button class="btn btn-primary" onclick="document.getElementById('addSubjectModal').showModal()">Add Subject</button>
                 </div>
             </div>
 
-            <?php if (!empty($students)): ?>
+            <?php if (!empty($subjects)): ?>
                 <div class="overflow-x-auto">
                     <table class="table table-zebra w-full">
                         <thead>
                             <tr>
-                                <th>Student Name</th>
-                                <th>Class Average</th>
+                                <th>Subject Name</th>
+                                <th>Total Grades</th>
+                                <th>Average Grade</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($students as $student): ?>
+                            <?php foreach ($subjects as $subject): ?>
                                 <tr>
-                                    <td>
-                                        <div class="font-bold"><?php echo htmlspecialchars($student['first_name'] . ' ' . $student['last_name']); ?></div>
-                                        <?php if ($student['nick_name']): ?>
-                                            <div class="text-sm opacity-70"><?php echo htmlspecialchars($student['nick_name']); ?></div>
-                                        <?php endif; ?>
-                                    </td>
+                                    <td><?php echo htmlspecialchars($subject['subject_name']); ?></td>
+                                    <td><?php echo $subject['total_grades']; ?></td>
                                     <td>
                                         <div class="badge <?php 
-                                            $avg = $student['class_average'] ?? 0;
+                                            $avg = $subject['subject_average'] ?? 0;
                                             echo $avg >= 7 ? 'badge-success' : 
                                                 ($avg >= 5 ? 'badge-warning' : 'badge-error'); 
                                         ?> badge-lg">
@@ -53,20 +62,16 @@
                                     </td>
                                     <td>
                                         <div class="flex gap-2">
-                                            <a href="/teacher/grades/<?php echo $student['id']; ?>/<?php echo $class_id; ?>" 
-                                               class="btn btn-primary btn-sm">
-                                                View Grades
-                                            </a>
                                             <button class="btn btn-secondary btn-sm" 
-                                                    onclick="showAddGradeModal(<?php echo $student['id']; ?>)">
-                                                Add Grade
+                                                    onclick="showEditSubjectModal(<?php echo htmlspecialchars(json_encode($subject)); ?>)">
+                                                Edit
                                             </button>
-                                            <form action="/teacher/class/<?php echo $class_id; ?>/remove-student/<?php echo $student['id']; ?>" 
+                                            <form action="/teacher/subject/<?php echo $subject['id']; ?>/delete" 
                                                   method="POST" 
                                                   class="inline"
-                                                  onsubmit="return confirm('Are you sure you want to remove this student from the class?');">
+                                                  onsubmit="return confirm('Are you sure you want to delete this subject?');">
                                                 <button type="submit" class="btn btn-error btn-sm">
-                                                    Remove
+                                                    Delete
                                                 </button>
                                             </form>
                                         </div>
@@ -82,7 +87,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current flex-shrink-0 w-6 h-6">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
-                        <span>No students in this class yet.</span>
+                        <span>No subjects added yet.</span>
                     </div>
                 </div>
             <?php endif; ?>
@@ -90,47 +95,45 @@
     </div>
 </div>
 
-<!-- Add Grade Modal -->
-<dialog id="addGradeModal" class="modal">
+<!-- Add Subject Modal -->
+<dialog id="addSubjectModal" class="modal">
     <div class="modal-box">
-        <h3 class="font-bold text-lg mb-4">Add New Grade</h3>
-        <form action="/teacher/addGrade" method="POST">
-            <input type="hidden" name="student_id" id="modalStudentId">
-            <input type="hidden" name="class_id" value="<?php echo $class_id; ?>">
-            
+        <h3 class="font-bold text-lg mb-4">Add New Subject</h3>
+        <form action="/teacher/subject/add" method="POST">
             <div class="form-control w-full mb-4">
                 <label class="label">
-                    <span class="label-text">Subject</span>
+                    <span class="label-text">Subject Name</span>
                 </label>
-                <select name="subject_id" class="select select-bordered w-full" required>
-                    <option value="">Select Subject</option>
-                    <?php foreach ($subjects as $subject): ?>
-                        <option value="<?php echo $subject['id']; ?>">
-                            <?php echo htmlspecialchars($subject['subject_name']); ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-
-            <div class="form-control w-full mb-4">
-                <label class="label">
-                    <span class="label-text">Grade</span>
-                </label>
-                <input type="number" name="grade" class="input input-bordered w-full" 
-                       min="1" max="10" step="0.1" required>
-            </div>
-
-            <div class="form-control w-full mb-4">
-                <label class="label">
-                    <span class="label-text">Date</span>
-                </label>
-                <input type="date" name="grade_date" class="input input-bordered w-full" 
-                       value="<?php echo date('Y-m-d'); ?>" required>
+                <input type="text" name="subject_name" class="input input-bordered w-full" required>
             </div>
 
             <div class="modal-action">
-                <button type="button" class="btn" onclick="document.getElementById('addGradeModal').close()">Cancel</button>
-                <button type="submit" class="btn btn-primary">Add Grade</button>
+                <button type="button" class="btn" onclick="document.getElementById('addSubjectModal').close()">Cancel</button>
+                <button type="submit" class="btn btn-primary">Add Subject</button>
+            </div>
+        </form>
+    </div>
+    <form method="dialog" class="modal-backdrop">
+        <button>close</button>
+    </form>
+</dialog>
+
+<!-- Edit Subject Modal -->
+<dialog id="editSubjectModal" class="modal">
+    <div class="modal-box">
+        <h3 class="font-bold text-lg mb-4">Edit Subject</h3>
+        <form action="/teacher/subject/update" method="POST">
+            <input type="hidden" name="subject_id" id="editSubjectId">
+            <div class="form-control w-full mb-4">
+                <label class="label">
+                    <span class="label-text">Subject Name</span>
+                </label>
+                <input type="text" name="subject_name" id="editSubjectName" class="input input-bordered w-full" required>
+            </div>
+
+            <div class="modal-action">
+                <button type="button" class="btn" onclick="document.getElementById('editSubjectModal').close()">Cancel</button>
+                <button type="submit" class="btn btn-primary">Update Subject</button>
             </div>
         </form>
     </div>
@@ -140,9 +143,10 @@
 </dialog>
 
 <script>
-function showAddGradeModal(studentId) {
-    document.getElementById('modalStudentId').value = studentId;
-    document.getElementById('addGradeModal').showModal();
+function showEditSubjectModal(subject) {
+    document.getElementById('editSubjectId').value = subject.id;
+    document.getElementById('editSubjectName').value = subject.subject_name;
+    document.getElementById('editSubjectModal').showModal();
 }
 </script>
 

@@ -35,26 +35,41 @@ class Auth extends Model
     {
         self::init();
         
-        $hashed_password = password_hash($password, PASSWORD_BCRYPT);
-        
-        $sql = "INSERT INTO users (first_name, last_name, nick_name, password, role) 
-                VALUES (:first_name, :last_name, :nick_name, :password, :role)";
-                
-        $result = self::$db->query($sql, [
-            ":first_name" => $first_name,
-            ":last_name" => $last_name,
-            ":nick_name" => $nick_name,
-            ":password" => $hashed_password,
-            ":role" => $role
-        ]);
+        try {
+            // Start transaction
+            self::$db->beginTransaction();
+            
+            // Hash password
+            $hashed_password = password_hash($password, PASSWORD_BCRYPT);
+            
+            // Insert user
+            $sql = "INSERT INTO users (first_name, last_name, nick_name, password, role) 
+                    VALUES (:first_name, :last_name, :nick_name, :password, :role)";
+                    
+            $result = self::$db->query($sql, [
+                ":first_name" => $first_name,
+                ":last_name" => $last_name,
+                ":nick_name" => $nick_name,
+                ":password" => $hashed_password,
+                ":role" => $role
+            ]);
 
-        if ($result && $role === 'student') {
-            $user_id = self::$db->lastInsertId();
-            $sql = "INSERT INTO students (user_id) VALUES (:user_id)";
-            self::$db->query($sql, [":user_id" => $user_id]);
+            if ($result && $role === 'student') {
+                $user_id = self::$db->lastInsertId();
+                $sql = "INSERT INTO students (user_id) VALUES (:user_id)";
+                $result = self::$db->query($sql, [":user_id" => $user_id]);
+            }
+
+            // Commit transaction
+            self::$db->commit();
+            return true;
+            
+        } catch (Exception $e) {
+            // Rollback transaction on error
+            self::$db->rollBack();
+            error_log("Registration error: " . $e->getMessage());
+            return false;
         }
-
-        return $result;
     }
 
     public static function nickNameExists($nick_name)

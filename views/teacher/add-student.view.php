@@ -54,7 +54,7 @@
                             <td class="student-name"><?php echo htmlspecialchars($student['first_name'] . ' ' . $student['last_name']); ?></td>
                             <td class="student-nickname"><?php echo htmlspecialchars($student['nick_name']); ?></td>
                             <td>
-                                <form action="/teacher/addStudentToClass/<?php echo $class_id; ?>" method="POST" class="inline">
+                                <form action="/teacher/class/<?php echo $class_id; ?>/add-student-to-class" method="POST" class="inline">
                                     <input type="hidden" name="student_id" value="<?php echo $student['id']; ?>">
                                     <button type="submit" class="btn btn-primary btn-sm">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">

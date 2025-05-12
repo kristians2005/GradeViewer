@@ -1,6 +1,6 @@
 <div class="navbar bg-base-100 shadow-lg fixed z-50">
     <div class="navbar-start">
-        <a href="/" class="btn btn-ghost text-xl items-center"> <img src="views\partials\logo.png" class="w-[30px]"
+        <a href="/" class="btn btn-ghost text-xl items-center"> <img src="/views/partials/logo.png" class="w-[30px]"
                 alt="Stashly">
             klAss</a>
     </div>

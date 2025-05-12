@@ -11,6 +11,8 @@
         teacher:
             nickname: teacher
             password: 1Password.
+
+        every user that is seeded has the same password.
         </code></pre>
     </div>
 

@@ -29,7 +29,7 @@
                     <!-- Profile Info -->
                     <div class="flex-1 text-center md:text-left">
                         <h1 class="text-3xl font-bold mb-2"><?php echo htmlspecialchars($_SESSION['first_name'] . ' ' . $_SESSION['last_name']); ?></h1>
-                        <p class="text-base-content/70"><?php echo ucfirst($_SESSION['role']); ?></p>
+                        <p class="text-base-content/70"><?php echo ucfirst($_SESSION['role'] ?? 'user'); ?></p>
                         <?php if (!empty($_SESSION['nick_name'])): ?>
                             <div class="badge badge-primary mt-2"><?php echo htmlspecialchars($_SESSION['nick_name']); ?></div>
                         <?php endif; ?>
@@ -85,6 +85,12 @@
                             <input type="text" name="nick_name" value="<?php echo htmlspecialchars($_SESSION['nick_name'] ?? ''); ?>" class="input input-bordered" />
                         </div>
 
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text">Email</span>
+                            </label>
+                            <input type="email" value="<?php echo htmlspecialchars($_SESSION['email'] ?? ''); ?>" class="input input-bordered" disabled />
+                        </div>
                     </div>
 
                     <div class="divider">Change Password</div>
@@ -137,4 +143,4 @@ function previewImage(input) {
 }
 </script>
 
-<?php require_once "views/partials/footer.view.php"; ?>
+<?php require_once "views/partials/footer.view.php"; ?> 

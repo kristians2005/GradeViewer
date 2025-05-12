@@ -52,4 +52,9 @@ return [
 
   //reports
   '/reports/export' => ['controller' => 'ReportsController@export', 'roles' => ['teacher']],
+
+  // Profile routes
+  '/profile' => ['controller' => 'ProfileController@index', 'roles' => ['student', 'teacher']],
+  '/profile/update-info' => ['controller' => 'ProfileController@updateInfo', 'roles' => ['student', 'teacher']],
+  '/profile/update-picture' => ['controller' => 'ProfileController@updatePicture', 'roles' => ['student', 'teacher']],
 ];

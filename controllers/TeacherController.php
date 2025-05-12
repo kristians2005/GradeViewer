@@ -114,8 +114,51 @@ class TeacherController
             exit;
         }
 
+        // Get student info
+        $student = Teacher::getStudentInfo($student_id);
+        if (!$student) {
+            $_SESSION['error'] = "Student not found.";
+            header("Location: /teacher/classes");
+            exit;
+        }
+
+        // Get class info
+        $class = Teacher::getClassInfo($class_id);
+        if (!$class) {
+            $_SESSION['error'] = "Class not found.";
+            header("Location: /teacher/classes");
+            exit;
+        }
+
+        // Verify that the class belongs to this teacher
+        $classes = Teacher::getTeacherClasses($_SESSION['user_id']);
+        $class_exists = false;
+        foreach ($classes as $c) {
+            if ($c['id'] == $class_id) {
+                $class_exists = true;
+                break;
+            }
+        }
+
+        if (!$class_exists) {
+            $_SESSION['error'] = "You don't have permission to view this class.";
+            header("Location: /teacher/classes");
+            exit;
+        }
+
         $grades = Teacher::getStudentGrades($student_id, $class_id);
         $subjects = Teacher::getClassSubjects($class_id);
+        
+        // Calculate average grade
+        $average_grade = 0;
+        if (!empty($grades)) {
+            $sum = array_sum(array_column($grades, 'grade'));
+            $average_grade = $sum / count($grades);
+        }
+
+        // Set variables for the view
+        $student_name = $student['first_name'] . ' ' . $student['last_name'];
+        $class_name = $class['class_name'];
 
         require_once "views/teacher/grades.view.php";
     }
@@ -127,14 +170,22 @@ class TeacherController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $student_id = $_POST['student_id'] ?? null;
+            $class_id = $_POST['class_id'] ?? null;
             $subject_id = $_POST['subject_id'] ?? null;
             $grade = $_POST['grade'] ?? null;
             $grade_date = $_POST['grade_date'] ?? date('Y-m-d');
 
-            if ($student_id && $subject_id && $grade) {
-                Teacher::addGrade($student_id, $subject_id, $grade, $grade_date);
-                header("Location: /teacher/grades/{$student_id}");
+            if ($student_id && $class_id && $subject_id && $grade) {
+                $result = Teacher::addGrade($student_id, $subject_id, $grade, $grade_date);
+                if ($result) {
+                    $_SESSION['success'] = "Grade added successfully.";
+                } else {
+                    $_SESSION['error'] = "Failed to add grade.";
+                }
+                header("Location: /teacher/grades/{$student_id}/{$class_id}");
                 exit;
+            } else {
+                $_SESSION['error'] = "All fields are required.";
             }
         }
 

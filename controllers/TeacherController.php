@@ -255,7 +255,12 @@ class TeacherController
             }
         }
 
-        header("Location: /teacher/subjects");
+        // Redirect based on whether we have a class_id
+        if ($class_id) {
+            header("Location: /teacher/class/{$class_id}/subjects");
+        } else {
+            header("Location: /teacher/subjects");
+        }
         exit;
     }
 
@@ -264,23 +269,31 @@ class TeacherController
         Middleware::isLoggedIn();
         Middleware::checkRole('teacher');
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $subject_id = $_POST['subject_id'] ?? null;
-            $subject_name = $_POST['subject_name'] ?? '';
-
-            if (empty($subject_name)) {
-                $_SESSION['error'] = "Subject name is required.";
-            } else {
-                $result = Teacher::updateSubject($subject_id, $subject_name);
-                if ($result) {
-                    $_SESSION['success'] = "Subject updated successfully.";
-                } else {
-                    $_SESSION['error'] = "Failed to update subject.";
-                }
-            }
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: /teacher/classes');
+            exit;
         }
 
-        header("Location: /teacher/subjects");
+        $subject_id = $_POST['subject_id'] ?? null;
+        $subject_name = $_POST['subject_name'] ?? '';
+
+        if (!$subject_id || !$subject_name) {
+            $_SESSION['error'] = 'All fields are required';
+            header('Location: /teacher/classes');
+            exit;
+        }
+
+        $teacher = new Teacher();
+        $result = $teacher->updateSubject($subject_id, $subject_name);
+
+        if ($result) {
+            $_SESSION['success'] = 'Subject updated successfully';
+        } else {
+            $_SESSION['error'] = 'Failed to update subject';
+        }
+
+        $class_id = $teacher->getSubjectClassId($subject_id);
+        header("Location: /teacher/class/{$class_id}/subjects");
         exit;
     }
 
@@ -289,16 +302,96 @@ class TeacherController
         Middleware::isLoggedIn();
         Middleware::checkRole('teacher');
 
-        if ($subject_id) {
-            $result = Teacher::deleteSubject($subject_id);
-            if ($result) {
-                $_SESSION['success'] = "Subject deleted successfully.";
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: /teacher/classes');
+            exit;
+        }
+
+        $teacher = new Teacher();
+        $class_id = $teacher->getSubjectClassId($subject_id);
+        $result = $teacher->deleteSubject($subject_id);
+
+        if ($result) {
+            $_SESSION['success'] = 'Subject deleted successfully';
+        } else {
+            $_SESSION['error'] = 'Failed to delete subject';
+        }
+
+        header("Location: /teacher/class/{$class_id}/subjects");
+        exit;
+    }
+
+    public function editStudent($student_id)
+    {
+        Middleware::isLoggedIn();
+        Middleware::checkRole('teacher');
+
+        // Get student info
+        $student = Teacher::getStudentInfo($student_id);
+        if (!$student) {
+            $_SESSION['error'] = "Student not found.";
+            header("Location: /teacher/classes");
+            exit;
+        }
+
+        // Get the class ID for the back button
+        $class_id = Teacher::getStudentClassId($student_id);
+        if (!$class_id) {
+            $_SESSION['error'] = "Student is not assigned to any class.";
+            header("Location: /teacher/classes");
+            exit;
+        }
+
+        require_once "views/teacher/edit-student.view.php";
+    }
+
+    public function updateStudent($student_id)
+    {
+        Middleware::isLoggedIn();
+        Middleware::checkRole('teacher');
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $first_name = $_POST['first_name'] ?? '';
+            $last_name = $_POST['last_name'] ?? '';
+            $nick_name = $_POST['nick_name'] ?? '';
+
+            if ($first_name && $last_name) {
+                $result = Teacher::updateStudentInfo($student_id, [
+                    'first_name' => $first_name,
+                    'last_name' => $last_name,
+                    'nick_name' => $nick_name
+                ]);
+
+                if ($result) {
+                    $_SESSION['success'] = "Student information updated successfully.";
+                } else {
+                    $_SESSION['error'] = "Failed to update student information.";
+                }
             } else {
-                $_SESSION['error'] = "Failed to delete subject.";
+                $_SESSION['error'] = "Required fields cannot be empty.";
             }
         }
 
-        header("Location: /teacher/subjects");
+        // Get the class ID for redirect
+        $class_id = Teacher::getStudentClassId($student_id);
+        header("Location: /teacher/students/{$class_id}");
         exit;
+    }
+
+    public function classSubjects($class_id) {
+        Middleware::isLoggedIn();
+        Middleware::checkRole('teacher');
+
+        $teacher = new Teacher();
+        $class = $teacher->getClassInfo($class_id);
+        
+        if (!$class) {
+            $_SESSION['error'] = 'Class not found';
+            header('Location: /teacher/classes');
+            exit;
+        }
+
+        $subjects = $teacher->getClassSubjects($class_id);
+        require_once 'views/teacher/class-subjects.view.php';
     }
 } 

@@ -35,15 +35,15 @@
         <div class="card-body">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
                 <div>
-                    <h2 class="card-title text-3xl font-bold">Manage Subjects</h2>
-                    <p class="text-base-content/70">Create and organize academic subjects</p>
+                    <h2 class="card-title text-3xl font-bold">Class Subjects</h2>
+                    <p class="text-base-content/70">Manage subjects for <?php echo htmlspecialchars($class['class_name']); ?></p>
                 </div>
                 <div class="flex flex-col sm:flex-row gap-2">
-                    <a href="/teacher/dashboard" class="btn btn-ghost btn-sm sm:btn-md">
+                    <a href="/teacher/students/<?php echo $class_id; ?>" class="btn btn-ghost btn-sm sm:btn-md">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12" />
                         </svg>
-                        Back to Dashboard
+                        Back to Students
                     </a>
                     <button class="btn btn-primary btn-sm sm:btn-md" onclick="document.getElementById('addSubjectModal').showModal()">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -55,65 +55,7 @@
             </div>
 
             <?php if (!empty($subjects)): ?>
-                <!-- Subject Analytics -->
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6" data-aos="fade-up" data-aos-delay="100">
-                    <div class="stat bg-base-200 rounded-box">
-                        <div class="stat-figure text-primary">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                            </svg>
-                        </div>
-                        <div class="stat-title">Total Subjects</div>
-                        <div class="stat-value text-primary"><?php echo count($subjects); ?></div>
-                        <div class="stat-desc">Academic curriculum</div>
-                    </div>
-                    
-                    <div class="stat bg-base-200 rounded-box">
-                        <div class="stat-figure text-secondary">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                            </svg>
-                        </div>
-                        <div class="stat-title">Total Grades</div>
-                        <div class="stat-value text-secondary">
-                            <?php 
-                                $totalGrades = 0;
-                                foreach ($subjects as $subject) {
-                                    $totalGrades += $subject['total_grades'];
-                                }
-                                echo $totalGrades;
-                            ?>
-                        </div>
-                        <div class="stat-desc">Recorded assessments</div>
-                    </div>
-                    
-                    <div class="stat bg-base-200 rounded-box">
-                        <div class="stat-figure text-accent">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                            </svg>
-                        </div>
-                        <div class="stat-title">Overall Average</div>
-                        <div class="stat-value text-accent">
-                            <?php 
-                                $totalAverage = 0;
-                                $subjectsWithGrades = 0;
-                                
-                                foreach ($subjects as $subject) {
-                                    if ($subject['subject_average'] > 0) {
-                                        $totalAverage += $subject['subject_average'];
-                                        $subjectsWithGrades++;
-                                    }
-                                }
-                                
-                                echo $subjectsWithGrades > 0 ? number_format($totalAverage / $subjectsWithGrades, 2) : '0.00';
-                            ?>
-                        </div>
-                        <div class="stat-desc">Across all subjects</div>
-                    </div>
-                </div>
-
-                <div class="overflow-x-auto" data-aos="fade-up" data-aos-delay="150">
+                <div class="overflow-x-auto">
                     <table class="table table-zebra w-full">
                         <thead>
                             <tr>
@@ -180,7 +122,7 @@
                     </table>
                 </div>
             <?php else: ?>
-                <div class="alert alert-info shadow-lg" data-aos="fade-up" data-aos-delay="100">
+                <div class="alert alert-info shadow-lg">
                     <div>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current flex-shrink-0 w-6 h-6">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -194,17 +136,6 @@
                         <button class="btn btn-sm btn-primary" onclick="document.getElementById('addSubjectModal').showModal()">Add Now</button>
                     </div>
                 </div>
-                
-                <!-- Empty state illustration -->
-                <div class="flex flex-col items-center justify-center py-12" data-aos="fade-up" data-aos-delay="150">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-base-content/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                    </svg>
-                    <p class="mt-4 text-base-content/50 text-center max-w-md">
-                        Subjects are the foundation of your teaching curriculum. Add subjects to organize your grades 
-                        and track student performance across different academic areas.
-                    </p>
-                </div>
             <?php endif; ?>
         </div>
     </div>
@@ -215,23 +146,13 @@
     <div class="modal-box">
         <h3 class="font-bold text-lg mb-4">Add New Subject</h3>
         <form action="/teacher/subject/add" method="POST">
+            <input type="hidden" name="class_id" value="<?php echo $class_id; ?>">
+            
             <div class="form-control w-full mb-4">
                 <label class="label">
-                    <span class="label-text">Select Subject</span>
+                    <span class="label-text">Subject Name</span>
                 </label>
-                <select name="subject_name" class="select select-bordered w-full" required>
-                    <option value="">Choose a subject</option>
-                    <option value="Mathematics">Mathematics</option>
-                    <option value="Physics">Physics</option>
-                    <option value="Chemistry">Chemistry</option>
-                    <option value="Biology">Biology</option>
-                    <option value="English">English</option>
-                    <option value="History">History</option>
-                    <option value="Geography">Geography</option>
-                    <option value="Computer Science">Computer Science</option>
-                    <option value="Literature">Literature</option>
-                    <option value="Art">Art</option>
-                </select>
+                <input type="text" name="subject_name" class="input input-bordered w-full" required>
             </div>
 
             <div class="modal-action">
@@ -256,6 +177,7 @@
         <h3 class="font-bold text-lg mb-4">Edit Subject</h3>
         <form action="/teacher/subject/update" method="POST">
             <input type="hidden" name="subject_id" id="editSubjectId">
+            
             <div class="form-control w-full mb-4">
                 <label class="label">
                     <span class="label-text">Subject Name</span>

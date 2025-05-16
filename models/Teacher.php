@@ -264,4 +264,32 @@ class Teacher extends Model
         $sql = "SELECT * FROM classes WHERE id = :class_id";
         return self::$db->query($sql, [":class_id" => $class_id])->fetch();
     }
+
+    public static function getStudentClassId($student_id)
+    {
+        self::init();
+        
+        $sql = "SELECT class_id FROM students WHERE user_id = :student_id";
+        $result = self::$db->query($sql, [":student_id" => $student_id])->fetch();
+        
+        return $result ? $result['class_id'] : null;
+    }
+
+    public static function updateStudentInfo($student_id, $data)
+    {
+        self::init();
+        
+        $sql = "UPDATE users 
+                SET first_name = :first_name,
+                    last_name = :last_name,
+                    nick_name = :nick_name
+                WHERE id = :student_id AND role = 'student'";
+                
+        return self::$db->query($sql, [
+            ":student_id" => $student_id,
+            ":first_name" => $data['first_name'],
+            ":last_name" => $data['last_name'],
+            ":nick_name" => $data['nick_name']
+        ]);
+    }
 } 

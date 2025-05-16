@@ -27,6 +27,9 @@ return [
   '/teacher/class/{class_id}/add-student' => ['controller' => 'TeacherController@showAddStudent', 'roles' => ['teacher']],
   '/teacher/class/{class_id}/add-student-to-class' => ['controller' => 'TeacherController@addStudentToClass', 'roles' => ['teacher']],
   '/teacher/class/{class_id}/remove-student/{student_id}' => ['controller' => 'TeacherController@removeStudentFromClass', 'roles' => ['teacher']],
+  '/teacher/student/{student_id}/edit' => ['controller' => 'TeacherController@editStudent', 'roles' => ['teacher']],
+  '/teacher/student/{student_id}/update' => ['controller' => 'TeacherController@updateStudent', 'roles' => ['teacher']],
+  '/teacher/class/{class_id}/subjects' => ['controller' => 'TeacherController@classSubjects', 'roles' => ['teacher']],
 
   // Common protected routes
   '/profile' => ['controller' => 'ProfileController@index', 'roles' => ['student', 'teacher']],
@@ -54,7 +57,6 @@ return [
   '/reports/export' => ['controller' => 'ReportsController@export', 'roles' => ['teacher']],
 
   // Profile routes
-  '/profile' => ['controller' => 'ProfileController@index', 'roles' => ['student', 'teacher']],
   '/profile/update-info' => ['controller' => 'ProfileController@updateInfo', 'roles' => ['student', 'teacher']],
-  '/profile/update-picture' => ['controller' => 'ProfileController@updatePicture', 'roles' => ['student', 'teacher']],
+  '/profile/update-picture' => ['controller' => 'ProfileController@updatePicture', 'roles' => ['student', 'teacher']]
 ];

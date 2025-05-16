@@ -123,8 +123,24 @@ INSERT INTO classes (teacher_id, class_name) VALUES
 INSERT INTO subjects (class_id, subject_name) VALUES
 (1, 'Mathematics'),    -- For Class 12A
 (1, 'Physics'),        -- For Class 12A
+(1, 'Chemistry'),      -- For Class 12A
+(1, 'Biology'),        -- For Class 12A
+(1, 'English'),        -- For Class 12A
+(1, 'History'),        -- For Class 12A
+(1, 'Geography'),      -- For Class 12A
+(1, 'Computer Science'),-- For Class 12A
+(1, 'Literature'),     -- For Class 12A
+(1, 'Art'),           -- For Class 12A
 (2, 'Mathematics'),    -- For Class 12B
-(2, 'Physics');        -- For Class 12B
+(2, 'Physics'),        -- For Class 12B
+(2, 'Chemistry'),      -- For Class 12B
+(2, 'Biology'),        -- For Class 12B
+(2, 'English'),        -- For Class 12B
+(2, 'History'),        -- For Class 12B
+(2, 'Geography'),      -- For Class 12B
+(2, 'Computer Science'),-- For Class 12B
+(2, 'Literature'),     -- For Class 12B
+(2, 'Art');           -- For Class 12B
 
 INSERT INTO students (user_id, class_id) VALUES
 (2, 1),  -- test student in first class
@@ -145,19 +161,113 @@ INSERT INTO students (user_id, class_id) VALUES
 (18, 2), -- Noah in second class
 (19, 2); -- Olivia in second class
 
--- Previous schema and data setup remains the same until the Grades insert
-
--- Corrected sample grades with proper student_id references
+-- Insert sample grades for all students across all subjects
 INSERT INTO grades (student_id, subject_id, grade) VALUES
--- Grades for test student (student_id 1 in class 12A)
-(1, 1, 8.5), (1, 2, 9.0),
+-- Grades for test student (student_id 1) in Class 12A
+(1, 1, 8.5),  -- Mathematics
+(1, 2, 9.0),  -- Physics
+(1, 3, 7.5),  -- Chemistry
+(1, 4, 8.0),  -- Biology
+(1, 5, 9.5),  -- English
+(1, 6, 8.0),  -- History
+(1, 7, 7.5),  -- Geography
+(1, 8, 9.0),  -- Computer Science
+(1, 9, 8.5),  -- Literature
+(1, 10, 7.0), -- Art
 
--- Grades for students in class 12B (using subjects 3 and 4)
-(2, 3, 7.5), (2, 4, 8.0),
-(3, 3, 9.0), (3, 4, 8.5),
-(4, 3, 7.0), (4, 4, 7.5),
-(5, 3, 8.0), (5, 4, 8.0),
-(6, 3, 9.5), (6, 4, 9.0),
-(7, 3, 6.5), (7, 4, 7.0),
-(8, 3, 8.5), (8, 4, 8.5),
-(9, 3, 7.5), (9, 4, 8.0);
+-- Grades for students in Class 12B (student_ids 2-19)
+-- Jane Smith (student_id 2)
+(2, 11, 8.0),  -- Mathematics
+(2, 12, 7.5),  -- Physics
+(2, 13, 8.5),  -- Chemistry
+(2, 14, 9.0),  -- Biology
+(2, 15, 8.0),  -- English
+(2, 16, 7.5),  -- History
+(2, 17, 8.5),  -- Geography
+(2, 18, 9.0),  -- Computer Science
+(2, 19, 8.0),  -- Literature
+(2, 20, 7.5),  -- Art
+
+-- Alice Johnson (student_id 3)
+(3, 11, 9.0),  -- Mathematics
+(3, 12, 8.5),  -- Physics
+(3, 13, 9.5),  -- Chemistry
+(3, 14, 8.0),  -- Biology
+(3, 15, 9.0),  -- English
+(3, 16, 8.5),  -- History
+(3, 17, 9.0),  -- Geography
+(3, 18, 8.5),  -- Computer Science
+(3, 19, 9.0),  -- Literature
+(3, 20, 8.0),  -- Art
+
+-- Bob Wilson (student_id 4)
+(4, 11, 7.0),  -- Mathematics
+(4, 12, 7.5),  -- Physics
+(4, 13, 8.0),  -- Chemistry
+(4, 14, 7.5),  -- Biology
+(4, 15, 8.0),  -- English
+(4, 16, 7.0),  -- History
+(4, 17, 7.5),  -- Geography
+(4, 18, 8.0),  -- Computer Science
+(4, 19, 7.5),  -- Literature
+(4, 20, 8.0),  -- Art
+
+-- Charlie Brown (student_id 5)
+(5, 11, 8.0),  -- Mathematics
+(5, 12, 8.5),  -- Physics
+(5, 13, 8.0),  -- Chemistry
+(5, 14, 8.5),  -- Biology
+(5, 15, 8.0),  -- English
+(5, 16, 8.5),  -- History
+(5, 17, 8.0),  -- Geography
+(5, 18, 8.5),  -- Computer Science
+(5, 19, 8.0),  -- Literature
+(5, 20, 8.5),  -- Art
+
+-- David Miller (student_id 6)
+(6, 11, 9.5),  -- Mathematics
+(6, 12, 9.0),  -- Physics
+(6, 13, 9.5),  -- Chemistry
+(6, 14, 9.0),  -- Biology
+(6, 15, 9.5),  -- English
+(6, 16, 9.0),  -- History
+(6, 17, 9.5),  -- Geography
+(6, 18, 9.0),  -- Computer Science
+(6, 19, 9.5),  -- Literature
+(6, 20, 9.0),  -- Art
+
+-- Emma Davis (student_id 7)
+(7, 11, 6.5),  -- Mathematics
+(7, 12, 7.0),  -- Physics
+(7, 13, 6.5),  -- Chemistry
+(7, 14, 7.0),  -- Biology
+(7, 15, 7.5),  -- English
+(7, 16, 6.5),  -- History
+(7, 17, 7.0),  -- Geography
+(7, 18, 7.5),  -- Computer Science
+(7, 19, 6.5),  -- Literature
+(7, 20, 7.0),  -- Art
+
+-- Frank Garcia (student_id 8)
+(8, 11, 8.5),  -- Mathematics
+(8, 12, 8.0),  -- Physics
+(8, 13, 8.5),  -- Chemistry
+(8, 14, 8.0),  -- Biology
+(8, 15, 8.5),  -- English
+(8, 16, 8.0),  -- History
+(8, 17, 8.5),  -- Geography
+(8, 18, 8.0),  -- Computer Science
+(8, 19, 8.5),  -- Literature
+(8, 20, 8.0),  -- Art
+
+-- Grace Martinez (student_id 9)
+(9, 11, 7.5),  -- Mathematics
+(9, 12, 8.0),  -- Physics
+(9, 13, 7.5),  -- Chemistry
+(9, 14, 8.0),  -- Biology
+(9, 15, 7.5),  -- English
+(9, 16, 8.0),  -- History
+(9, 17, 7.5),  -- Geography
+(9, 18, 8.0),  -- Computer Science
+(9, 19, 7.5),  -- Literature
+(9, 20, 8.0);  -- Art

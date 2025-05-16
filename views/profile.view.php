@@ -7,23 +7,11 @@
             <div class="card-body">
                 <div class="flex flex-col md:flex-row items-center gap-6">
                     <!-- Profile Picture -->
-                    <div class="relative group">
-                        <div class="avatar">
-                            <div class="w-32 h-32 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                                <img src="<?php echo !empty($_SESSION['profile_picture']) ? htmlspecialchars($_SESSION['profile_picture']) : 'https://ui-avatars.com/api/?name=' . urlencode($_SESSION['first_name'] . '+' . $_SESSION['last_name']) . '&background=random'; ?>" 
-                                     alt="Profile Picture" 
-                                     id="profilePreview" />
-                            </div>
+                    <div class="avatar">
+                        <div class="w-32 h-32 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                            <img src="https://ui-avatars.com/api/?name=<?php echo urlencode($_SESSION['first_name'] . '+' . $_SESSION['last_name']); ?>&background=random" 
+                                 alt="Profile Picture" />
                         </div>
-                        <form action="/profile/update-picture" method="POST" enctype="multipart/form-data" class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                            <label class="btn btn-circle btn-primary btn-sm cursor-pointer">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                                </svg>
-                                <input type="file" name="profile_picture" class="hidden" accept="image/*" onchange="previewImage(this)" />
-                            </label>
-                        </form>
                     </div>
 
                     <!-- Profile Info -->
@@ -84,13 +72,6 @@
                             </label>
                             <input type="text" name="nick_name" value="<?php echo htmlspecialchars($_SESSION['nick_name'] ?? ''); ?>" class="input input-bordered" />
                         </div>
-
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text">Email</span>
-                            </label>
-                            <input type="email" value="<?php echo htmlspecialchars($_SESSION['email'] ?? ''); ?>" class="input input-bordered" disabled />
-                        </div>
                     </div>
 
                     <div class="divider">Change Password</div>
@@ -127,20 +108,5 @@
         </div>
     </div>
 </div>
-
-<script>
-function previewImage(input) {
-    if (input.files && input.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            document.getElementById('profilePreview').src = e.target.result;
-        }
-        reader.readAsDataURL(input.files[0]);
-        
-        // Auto-submit the form when a file is selected
-        input.form.submit();
-    }
-}
-</script>
 
 <?php require_once "views/partials/footer.view.php"; ?> 

@@ -5,9 +5,9 @@
             klAss</a>
     </div>
     <div class="navbar-center">
-        <?php if (isset($_SESSION['logged_in'])): ?>
-            <a href="/home" class="btn btn-ghost text-md">Home</a>
-        <?php endif; ?>
+        <!-- <?php if (isset($_SESSION['logged_in'])): ?>
+            <a href="/" class="btn btn-ghost text-md">Home</a>
+        <?php endif; ?> -->
     </div>
     <div class="navbar-end">
         <?php if (isset($_SESSION['logged_in'])): ?>

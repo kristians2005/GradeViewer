@@ -4,9 +4,9 @@
         <h1 class="text-3xl text-center font-bold m-2">Login</h1>
         <input type="text" id="nick_name" name="nick_name"
             class="input input-bordered input-md <?php echo isset($error['nick_name']) ? 'input-error' : ''; ?>"
-            value="<?php echo $name ?? ''; ?>" required placeholder="Nick name">
+            value="<?php echo $nick_name ?? ''; ?>" required placeholder="Nick name">
 
-        <input type="password" id="password" name="password"
+        <input type="password" id="password" name="password" value="<?php echo $password ?? ''; ?>"
             class="input input-bordered input-md <?php echo isset($error['password']) ? 'input-error' : ''; ?>" required
             placeholder="Password">
 

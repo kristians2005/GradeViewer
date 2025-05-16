@@ -56,22 +56,6 @@
                 </div>
             </div>
             
-            <!-- Performance Charts -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-                <div class="card bg-base-200">
-                    <div class="card-body">
-                        <h3 class="card-title text-lg font-semibold">Subject Performance</h3>
-                        <div id="gradesChart" data-grades="[7.8, 6.5, 8.2, 7.1, 9.0]" data-subjects="['Math', 'Science', 'History', 'Language', 'Art']"></div>
-                    </div>
-                </div>
-                
-                <div class="card bg-base-200">
-                    <div class="card-body">
-                        <h3 class="card-title text-lg font-semibold">Attendance Overview</h3>
-                        <div id="attendanceChart" data-values="[85, 10, 5]"></div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 

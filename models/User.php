@@ -1,7 +1,27 @@
 <?php
 
-class User
+require_once "models/Model.php";
+
+class User extends Model
 {
+    protected static function getTableName(): string
+    {
+        return "users";
+    }
+
+    public static function getUserById($user_id)
+    {
+        self::init();
+        
+        try {
+            $sql = "SELECT * FROM users WHERE id = :user_id";
+            return self::$db->query($sql, [":user_id" => $user_id])->fetch();
+        } catch (Exception $e) {
+            error_log("Error getting user: " . $e->getMessage());
+            return false;
+        }
+    }
+
     public static function updateUserInfo($user_id, $data)
     {
         self::init();
@@ -37,22 +57,6 @@ class User
             ]);
         } catch (Exception $e) {
             error_log("Error updating password: " . $e->getMessage());
-            return false;
-        }
-    }
-
-    public static function updateProfilePicture($user_id, $picture_path)
-    {
-        self::init();
-        
-        try {
-            $sql = "UPDATE users SET profile_picture = :picture_path WHERE id = :user_id";
-            return self::$db->query($sql, [
-                ":user_id" => $user_id,
-                ":picture_path" => $picture_path
-            ]);
-        } catch (Exception $e) {
-            error_log("Error updating profile picture: " . $e->getMessage());
             return false;
         }
     }

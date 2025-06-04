@@ -62,5 +62,6 @@ return [
 
   // New routes
   '/teacher/class/{id}/students' => ['controller' => 'TeacherController@showStudents', 'roles' => ['teacher']],
-  '/teacher/class/{id}/export-pdf' => ['controller' => 'ExportPDFController@exportStudentsList', 'roles' => ['teacher']]
+  '/teacher/class/{id}/export-pdf' => ['controller' => 'ExportPDFController@exportStudentsList', 'roles' => ['teacher']],
+  '/student/grades/export-pdf' => ['controller' => 'ExportPDFController@exportStudentGrades', 'roles' => ['student']]
 ];

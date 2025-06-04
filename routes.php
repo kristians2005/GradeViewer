@@ -58,5 +58,9 @@ return [
 
   // Profile routes
   '/profile/update-info' => ['controller' => 'ProfileController@updateInfo', 'roles' => ['student', 'teacher']],
-  '/profile/update-picture' => ['controller' => 'ProfileController@updatePicture', 'roles' => ['student', 'teacher']]
+  '/profile/update-picture' => ['controller' => 'ProfileController@updatePicture', 'roles' => ['student', 'teacher']],
+
+  // New routes
+  '/teacher/class/{id}/students' => ['controller' => 'TeacherController@showStudents', 'roles' => ['teacher']],
+  '/teacher/class/{id}/export-pdf' => ['controller' => 'ExportPDFController@exportStudentsList', 'roles' => ['teacher']]
 ];
